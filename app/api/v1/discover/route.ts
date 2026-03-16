@@ -22,6 +22,16 @@ export async function GET(req: NextRequest) {
     const includeSwarms = params.get('include_swarms') !== 'false';
     const includeEntries = params.get('include_entries') !== 'false';
 
+    const VALID_DIFFICULTIES = ['Easy', 'Medium', 'Hard'];
+    const VALID_CATEGORIES = ['Earn Now', 'Infrastructure', 'Platforms', 'Token Agents'];
+
+    if (difficulty && !VALID_DIFFICULTIES.includes(difficulty)) {
+      return errorResponse(`Invalid difficulty. Must be one of: ${VALID_DIFFICULTIES.join(', ')}`, 'VALIDATION_ERROR', 400);
+    }
+    if (category && !VALID_CATEGORIES.includes(category)) {
+      return errorResponse(`Invalid category. Must be one of: ${VALID_CATEGORIES.join(', ')}`, 'VALIDATION_ERROR', 400);
+    }
+
     const opportunities: Record<string, unknown>[] = [];
 
     // 1. Match earning entries

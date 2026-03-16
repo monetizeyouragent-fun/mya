@@ -100,6 +100,27 @@ export async function POST(
       ],
     });
 
+    // Increment member_count
+    await db.execute({
+      sql: 'UPDATE swarms SET member_count = member_count + 1 WHERE id = ?',
+      args: [swarmId],
+    });
+
+    // Check if swarm is now full
+    const updatedSwarm = await db.execute({
+      sql: 'SELECT member_count, max_members FROM swarms WHERE id = ?',
+      args: [swarmId],
+    });
+    if (updatedSwarm.rows.length > 0) {
+      const s = updatedSwarm.rows[0];
+      if (Number(s.member_count) >= Number(s.max_members)) {
+        await db.execute({
+          sql: `UPDATE swarms SET status = 'full' WHERE id = ?`,
+          args: [swarmId],
+        });
+      }
+    }
+
     await insertFeedEvent('swarm_joined', applicant_name as string, String(swarm.name), { swarm_id: swarmId });
 
     return NextResponse.json({
@@ -111,6 +132,6 @@ export async function POST(
     if (message.includes('UNIQUE constraint failed') || message.includes('UNIQUE')) {
       return errorResponse('You have already applied to this swarm', 'DUPLICATE', 409);
     }
-    return errorResponse(message || 'Unknown error', 'INTERNAL_ERROR', 500);
+    return errorResponse('Failed to join swarm', 'INTERNAL_ERROR', 500);
   }
 }

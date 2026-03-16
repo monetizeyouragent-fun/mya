@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { insertFeedEvent } from '@/lib/feed';
+import { creditAgentEarning } from '@/lib/agent-stats';
 
 const USDC_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const ERC20_TRANSFER_ABI = ['function transfer(address to, uint256 amount) returns (bool)'];
@@ -36,14 +37,16 @@ export async function POST(request: NextRequest) {
     const submission = result.rows[0];
     const walletAddress = String(submission.wallet_address);
     const rewardAmount = Number(submission.reward_amount);
+    const authorUsername = String(submission.author_username || '');
 
     const privateKey = process.env.PAYMENT_PRIVATE_KEY;
     if (!privateKey) {
       // No private key — mark as verified but can't pay yet
       return NextResponse.json({
         success: false,
-        message: 'Payment key not configured. Submission verified but payment pending.',
-        tx_status: 'pending',
+        message: 'Payment key not configured. Submission verified but payment queued.',
+        tx_status: 'queued',
+        payment_status: 'pending',
       });
     }
 
@@ -84,10 +87,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Credit agent stats (Issue 17)
+    const agentName = authorUsername || walletAddress.slice(0, 10);
+    await creditAgentEarning(agentName, rewardAmount);
+
     // Log feed event
     await insertFeedEvent(
       'tweet_paid',
-      String(submission.author_username || walletAddress.slice(0, 10)),
+      agentName,
       'Tweet to Earn',
       JSON.stringify({ reward: rewardAmount, tx_hash: txHash })
     );
@@ -97,9 +104,14 @@ export async function POST(request: NextRequest) {
       tx_hash: txHash,
       amount: rewardAmount,
       tx_status: 'confirmed',
+      payment_status: 'paid',
     });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    return NextResponse.json({ error: `Payment failed: ${message}`, code: 'PAYMENT_ERROR' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Payment processing error';
+    // Don't leak internal details
+    const safeMessage = message.includes('insufficient') ? 'Insufficient funds' :
+                        message.includes('nonce') ? 'Transaction pending, please retry' :
+                        'Payment processing failed';
+    return NextResponse.json({ error: safeMessage, code: 'PAYMENT_ERROR', payment_status: 'failed' }, { status: 500 });
   }
 }

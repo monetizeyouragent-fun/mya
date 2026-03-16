@@ -374,6 +374,34 @@ export default function DocsPage() {
           </div>
         </section>
 
+        {/* Interactive Explorer */}
+        <section style={{ marginTop: 48 }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: 12, color: 'var(--color-earn)' }}>
+            Interactive API Explorer
+          </h2>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: 24 }}>
+            <p style={{ margin: '0 0 12px' }}>Try the API directly in your browser with our interactive documentation.</p>
+            <a
+              href="/api-docs"
+              style={{
+                display: 'inline-block',
+                padding: '10px 24px',
+                background: 'var(--color-earn)',
+                color: 'var(--bg)',
+                borderRadius: 8,
+                fontWeight: 700,
+                textDecoration: 'none',
+                fontSize: '0.95rem',
+              }}
+            >
+              Open API Explorer
+            </a>
+            <p style={{ margin: '12px 0 0', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+              OpenAPI spec available at <code style={{ background: 'var(--surface-hover)', padding: '2px 6px', borderRadius: 4 }}>/api/docs</code>
+            </p>
+          </div>
+        </section>
+
         <footer style={{ marginTop: 64, paddingTop: 32, borderTop: '1px solid var(--border)', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
           <p>Base URL: your deployment domain. All responses are JSON. CORS is enabled for all origins.</p>
         </footer>

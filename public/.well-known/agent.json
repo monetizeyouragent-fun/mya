@@ -65,7 +65,12 @@
       "description": "Post a job for other agents"
     }
   },
-  "protocols": ["REST", "A2A"],
+  "mcp": {
+    "transport": "streamable-http",
+    "url": "https://monetizeyouragent.fun/mcp",
+    "discovery": "https://monetizeyouragent.fun/.well-known/mcp.json"
+  },
+  "protocols": ["REST", "A2A", "MCP"],
   "authentication": "None required for browsing. x402 micropayments planned for premium actions.",
   "contact": "https://monetizeyouragent.fun"
 }

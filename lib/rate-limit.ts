@@ -5,6 +5,12 @@ interface RateLimitEntry {
   resetAt: number;
 }
 
+export interface RateLimitInfo {
+  limit: number;
+  remaining: number;
+  reset: number; // Unix timestamp in seconds
+}
+
 const stores = new Map<string, Map<string, RateLimitEntry>>();
 
 // Cleanup expired entries every 60s
@@ -26,6 +32,14 @@ function ensureCleanup() {
   }
 }
 
+function getIp(request: NextRequest): string {
+  return (
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request.headers.get('x-real-ip') ||
+    '127.0.0.1'
+  );
+}
+
 export function rateLimit(opts: { limit: number; windowMs: number; prefix?: string }) {
   const { limit, windowMs, prefix = 'default' } = opts;
   if (!stores.has(prefix)) stores.set(prefix, new Map());
@@ -33,11 +47,7 @@ export function rateLimit(opts: { limit: number; windowMs: number; prefix?: stri
   ensureCleanup();
 
   return function check(request: NextRequest): NextResponse | null {
-    const ip =
-      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-      request.headers.get('x-real-ip') ||
-      '127.0.0.1';
-
+    const ip = getIp(request);
     const now = Date.now();
     const entry = store.get(ip);
 
@@ -54,7 +64,12 @@ export function rateLimit(opts: { limit: number; windowMs: number; prefix?: stri
         { error: 'Too many requests. Please try again later.', code: 'RATE_LIMITED' },
         {
           status: 429,
-          headers: { 'Retry-After': String(retryAfter) },
+          headers: {
+            'Retry-After': String(retryAfter),
+            'X-RateLimit-Limit': String(limit),
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': String(Math.ceil(entry.resetAt / 1000)),
+          },
         }
       );
     }
@@ -63,6 +78,49 @@ export function rateLimit(opts: { limit: number; windowMs: number; prefix?: stri
   };
 }
 
+/** Get rate limit info for attaching to successful responses */
+export function getRateLimitInfo(
+  request: NextRequest,
+  prefix: string,
+  limit: number,
+  windowMs: number
+): RateLimitInfo {
+  const store = stores.get(prefix);
+  const ip = getIp(request);
+  const now = Date.now();
+
+  if (!store) {
+    return { limit, remaining: limit, reset: Math.ceil((now + windowMs) / 1000) };
+  }
+
+  const entry = store.get(ip);
+  if (!entry || now > entry.resetAt) {
+    return { limit, remaining: limit - 1, reset: Math.ceil((now + windowMs) / 1000) };
+  }
+
+  return {
+    limit,
+    remaining: Math.max(0, limit - entry.count),
+    reset: Math.ceil(entry.resetAt / 1000),
+  };
+}
+
+/** Attach rate limit headers to a response */
+export function withRateLimitHeaders(response: NextResponse, info: RateLimitInfo): NextResponse {
+  response.headers.set('X-RateLimit-Limit', String(info.limit));
+  response.headers.set('X-RateLimit-Remaining', String(info.remaining));
+  response.headers.set('X-RateLimit-Reset', String(info.reset));
+  return response;
+}
+
 // Pre-configured limiters
 export const postLimiter = rateLimit({ limit: 10, windowMs: 60_000, prefix: 'post' });
 export const getLimiter = rateLimit({ limit: 60, windowMs: 60_000, prefix: 'get' });
+
+// Pre-configured info getters
+export function getPostRateLimitInfo(request: NextRequest): RateLimitInfo {
+  return getRateLimitInfo(request, 'post', 10, 60_000);
+}
+export function getGetRateLimitInfo(request: NextRequest): RateLimitInfo {
+  return getRateLimitInfo(request, 'get', 60, 60_000);
+}

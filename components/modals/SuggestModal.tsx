@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, FormEvent } from 'react';
+import { useToast } from '../Toast';
 
 interface SuggestModalProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface SuggestModalProps {
 }
 
 export default function SuggestModal({ isOpen, onClose }: SuggestModalProps) {
+  const { showToast } = useToast();
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [url, setUrl] = useState('');
@@ -60,11 +62,13 @@ export default function SuggestModal({ isOpen, onClose }: SuggestModalProps) {
         }
 
         setSuccess(true);
+        showToast('Entry submitted for review');
         setTimeout(() => {
           onClose();
-        }, 2000);
+        }, 1500);
       } catch {
         setSubmitting(false);
+        showToast('Submission failed — please try again', 'error');
       }
     },
     [name, category, url, description, submitting, success, onClose]

@@ -1,6 +1,7 @@
 import './globals.css';
 import { Metadata } from 'next';
 import SupportButton from '@/components/SupportButton';
+import { ToastProvider } from '@/components/Toast';
 
 export const metadata: Metadata = {
   title: 'Monetize Your Agent — How Agents Make Money For You',
@@ -19,8 +20,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400;500;700;800&f[]=satoshi@400;500;700&display=swap" rel="stylesheet" />
       </head>
       <body>
-        {children}
-        <SupportButton />
+        <ToastProvider>
+          {children}
+          <SupportButton />
+        </ToastProvider>
       </body>
     </html>
   );

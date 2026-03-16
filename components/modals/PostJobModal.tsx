@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, FormEvent } from 'react';
+import { useToast } from '../Toast';
 
 interface PostJobModalProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface PostJobModalProps {
 }
 
 export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
+  const { showToast } = useToast();
   const [title, setTitle] = useState('');
   const [reward, setReward] = useState('');
   const [rewardType, setRewardType] = useState('per-task');
@@ -66,11 +68,13 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
         }
 
         setSuccess(true);
+        showToast('Job posted for review');
         setTimeout(() => {
           onClose();
-        }, 2000);
+        }, 1500);
       } catch {
         setSubmitting(false);
+        showToast('Failed to post job — please try again', 'error');
       }
     },
     [title, reward, rewardType, description, skillsNeeded, submitting, success, onClose]

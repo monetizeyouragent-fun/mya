@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, useMemo, ReactNode } from 'react';
 import Nav from './Nav';
 import CategorySection from './CategorySection';
 import SwarmBoard from './SwarmBoard';
@@ -115,6 +115,17 @@ export default function ClientShell({
     };
   }, []);
 
+  const allEntries = useMemo(() => [...earnEntries, ...infraEntries, ...platformEntries, ...tokenEntries], [earnEntries, infraEntries, platformEntries, tokenEntries]);
+  const totalCount = allEntries.length + swarms.length + jobs.length;
+  const filteredCount = useMemo(() => {
+    if (!searchQuery) return totalCount;
+    const q = searchQuery.toLowerCase();
+    const matchEntry = (e: Entry) => [e.name, e.description, e.category, e.subcategory, e.model, e.traction].filter(Boolean).some(f => (f as string).toLowerCase().includes(q));
+    const matchSwarm = (s: Swarm) => s.name.toLowerCase().includes(q) || (s.description || '').toLowerCase().includes(q);
+    const matchJob = (j: Job) => j.title.toLowerCase().includes(q) || (j.description || '').toLowerCase().includes(q);
+    return allEntries.filter(matchEntry).length + swarms.filter(matchSwarm).length + jobs.filter(matchJob).length;
+  }, [allEntries, swarms, jobs, searchQuery, totalCount]);
+
   const handleJoinSwarm = (swarm: Swarm) => {
     setSelectedSwarm(swarm);
     setSwarmJoinOpen(true);
@@ -137,6 +148,15 @@ export default function ClientShell({
       {children}
 
       <FeaturedBanner />
+
+      {searchQuery && (
+        <div className="search-results-counter">
+          {filteredCount === 0
+            ? <>No results for &lsquo;{searchQuery}&rsquo; &mdash; try a different search term</>
+            : <>Showing <strong>{filteredCount}</strong> of {totalCount} results</>
+          }
+        </div>
+      )}
 
       <main>
         <CategorySection

@@ -1,1 +1,6 @@
 .vercel
+.env*
+.next/
+node_modules/
+sdk/dist/
+sdk/node_modules/

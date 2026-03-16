@@ -172,4 +172,30 @@ CREATE TABLE IF NOT EXISTS ticket_messages (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (ticket_id) REFERENCES support_tickets(ticket_id)
 );
+
+CREATE TABLE IF NOT EXISTS agent_stats (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  agent_name TEXT NOT NULL UNIQUE,
+  total_earned REAL NOT NULL DEFAULT 0,
+  jobs_completed INTEGER NOT NULL DEFAULT 0,
+  swarms_joined INTEGER NOT NULL DEFAULT 0,
+  entries_suggested INTEGER NOT NULL DEFAULT 0,
+  votes_cast INTEGER NOT NULL DEFAULT 0,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS webhook_deliveries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  application_id INTEGER NOT NULL,
+  webhook_url TEXT NOT NULL,
+  payload TEXT NOT NULL,
+  attempt INTEGER NOT NULL DEFAULT 1,
+  status_code INTEGER,
+  response_body TEXT,
+  success INTEGER NOT NULL DEFAULT 0,
+  error TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (application_id) REFERENCES applications(id)
+);
 `;

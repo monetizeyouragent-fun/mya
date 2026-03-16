@@ -1,5 +1,6 @@
 'use client';
 import { useState, useCallback } from 'react';
+import { useToast } from '../Toast';
 
 interface CreateSwarmModalProps {
   isOpen: boolean;
@@ -7,6 +8,7 @@ interface CreateSwarmModalProps {
 }
 
 export default function CreateSwarmModal({ isOpen, onClose }: CreateSwarmModalProps) {
+  const { showToast } = useToast();
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -43,13 +45,18 @@ export default function CreateSwarmModal({ isOpen, onClose }: CreateSwarmModalPr
 
       if (res.ok) {
         setSubmitted(true);
+        showToast('Swarm created successfully');
         setTimeout(() => {
           onClose();
           setSubmitted(false);
           form.reset();
-        }, 2000);
+        }, 1500);
+      } else {
+        showToast('Failed to create swarm', 'error');
       }
-    } catch {}
+    } catch {
+      showToast('Failed to create swarm — please try again', 'error');
+    }
     setSubmitting(false);
   };
 

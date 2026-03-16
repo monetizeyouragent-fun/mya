@@ -27,6 +27,15 @@ export async function POST(request: NextRequest) {
   const fingerprint = createHash('sha256').update(ip).digest('hex').slice(0, 16);
 
   try {
+    // Verify entry exists before voting
+    const entryCheck = await db.execute({
+      sql: 'SELECT id FROM entries WHERE id = ?',
+      args: [entry_id as number],
+    });
+    if (entryCheck.rows.length === 0) {
+      return errorResponse('Entry not found', 'NOT_FOUND', 404);
+    }
+
     // Check for existing vote
     const existing = await db.execute({
       sql: 'SELECT id, direction FROM votes WHERE entry_id = ? AND voter_fingerprint = ?',
@@ -60,8 +69,7 @@ export async function POST(request: NextRequest) {
     await insertFeedEvent('vote', fingerprint.slice(0, 8), entryName, { direction, entry_id });
 
     return NextResponse.json({ success: true, action: 'voted', direction });
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    return errorResponse(message, 'INTERNAL_ERROR', 500);
+  } catch {
+    return errorResponse('Failed to process vote', 'INTERNAL_ERROR', 500);
   }
 }
