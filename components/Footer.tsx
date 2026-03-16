@@ -15,6 +15,7 @@ export default function Footer() {
         </div>
         <div className="footer__meta">
           <span>All submissions reviewed before going live</span>
+          <span className="footer__copyright">© 2026 monetizeyouragent.fun. All rights reserved.</span>
         </div>
       </div>
     </footer>

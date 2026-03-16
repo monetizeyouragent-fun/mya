@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { getLimiter, postLimiter } from '@/lib/rate-limit';
+import { getLimiter, postLimiter, getGetRateLimitInfo, getPostRateLimitInfo, withRateLimitHeaders } from '@/lib/rate-limit';
 import { errorResponse, parsePagination, paginatedResponse, validateBody, clean } from '@/lib/validation';
 import { insertFeedEvent } from '@/lib/feed';
 
@@ -21,7 +21,10 @@ export async function GET(request: NextRequest) {
       args: [limit, offset],
     });
 
-    return NextResponse.json(paginatedResponse(result.rows, totalCount, page, limit));
+    return withRateLimitHeaders(
+      NextResponse.json(paginatedResponse(result.rows, totalCount, page, limit)),
+      getGetRateLimitInfo(request)
+    );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return errorResponse(message, 'INTERNAL_ERROR', 500);
@@ -75,11 +78,14 @@ export async function POST(request: NextRequest) {
 
     insertFeedEvent('swarm_joined', leader_name as string, name as string, `Founded new swarm: ${name}`);
 
-    return NextResponse.json({
-      success: true,
-      message: 'Swarm created',
-      id: swarmId,
-    }, { status: 201 });
+    return withRateLimitHeaders(
+      NextResponse.json({
+        success: true,
+        message: 'Swarm created',
+        id: swarmId,
+      }, { status: 201 }),
+      getPostRateLimitInfo(request)
+    );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return errorResponse(message, 'INTERNAL_ERROR', 500);

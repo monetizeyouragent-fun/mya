@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { postLimiter } from '@/lib/rate-limit';
+import { postLimiter, getPostRateLimitInfo, withRateLimitHeaders } from '@/lib/rate-limit';
 import { validateBody, errorResponse } from '@/lib/validation';
 import { insertFeedEvent } from '@/lib/feed';
 
@@ -33,7 +33,10 @@ export async function POST(request: NextRequest) {
 
     await insertFeedEvent('job_posted', 'Anonymous', title as string);
 
-    return NextResponse.json({ success: true, message: 'Job posted for review' });
+    return withRateLimitHeaders(
+      NextResponse.json({ success: true, message: 'Job posted for review' }),
+      getPostRateLimitInfo(request)
+    );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return errorResponse(message, 'INTERNAL_ERROR', 500);

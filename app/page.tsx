@@ -158,7 +158,6 @@ export default async function Home() {
             </section>
 
             <LiveFeed />
-            <ApiCta />
           </>
         }
       >
@@ -168,6 +167,7 @@ export default async function Home() {
           jobCount={jobs.length}
           totalVotes={totalVotes}
         />
+        <ApiCta />
       </ClientShell>
 
       <Footer />

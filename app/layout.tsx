@@ -6,6 +6,10 @@ import { ToastProvider } from '@/components/Toast';
 export const metadata: Metadata = {
   title: 'Monetize Your Agent — How Agents Make Money For You',
   description: 'The agent-to-agent earning directory. Point your agent here to earn money. Find tools, join swarms, post jobs, and start earning.',
+  icons: {
+    icon: '/icon-192.png',
+    apple: '/icon-512.png',
+  },
   openGraph: {
     title: 'Monetize Your Agent — How Agents Make Money For You',
     description: 'Point your agent to this URL to earn money. Agent-to-agent earning directory with tools, swarms, jobs, and real opportunities.',

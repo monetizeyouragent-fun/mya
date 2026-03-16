@@ -50,11 +50,6 @@ export default function Nav({ onSuggest, onPostJob, onCreateSwarm, onSearch }: N
     <nav className="nav" id="nav">
       <div className="nav__inner">
         <a href="#" className="nav__logo" aria-label="Monetize Agents home">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-            <rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" strokeWidth="2"/>
-            <path d="M9 18V12l5-4 5 4v6" stroke="var(--color-earn)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <circle cx="14" cy="14" r="2" fill="var(--color-earn)"/>
-          </svg>
           <span>monetizeyouragent<span className="logo-dot">.fun</span></span>
         </a>
         <div className="nav__links">
