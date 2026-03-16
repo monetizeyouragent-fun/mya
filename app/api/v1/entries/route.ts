@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { postLimiter, getLimiter } from '@/lib/rate-limit';
+import { postLimiter, getLimiter, withRateLimitHeaders, getGetRateLimitInfo, getPostRateLimitInfo } from '@/lib/rate-limit';
 import { validateBody, errorResponse, parsePagination, paginatedResponse } from '@/lib/validation';
 import { insertFeedEvent } from '@/lib/feed';
 
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     const totalCount = Number(countResult.rows[0].total);
 
     const result = await db.execute({ sql, args: [...args, limit, offset] });
-    return NextResponse.json(paginatedResponse(result.rows, totalCount, page, limit));
+    return withRateLimitHeaders(NextResponse.json(paginatedResponse(result.rows, totalCount, page, limit)), getGetRateLimitInfo(request));
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return errorResponse(message, 'INTERNAL_ERROR', 500);
@@ -94,11 +94,11 @@ export async function POST(request: NextRequest) {
 
     await insertFeedEvent('entry_suggested', name as string, category as string);
 
-    return NextResponse.json({
+    return withRateLimitHeaders(NextResponse.json({
       success: true,
       message: 'Entry submitted for review',
       id: Number(dbResult.lastInsertRowid),
-    }, { status: 201 });
+    }, { status: 201 }), getPostRateLimitInfo(request));
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : '';
     return errorResponse(message || 'Failed to create entry', 'INTERNAL_ERROR', 500);

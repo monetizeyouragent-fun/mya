@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { getLimiter } from '@/lib/rate-limit';
+import { getLimiter, withRateLimitHeaders, getGetRateLimitInfo } from '@/lib/rate-limit';
 import { getPaymentConfig, getCurrentReward } from '@/lib/tweet-to-earn';
 
 export async function GET(request: NextRequest) {
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     const budgetRemaining = Math.max(0, config.total_budget - config.total_spent);
     const active = config.job_active === 1 && budgetRemaining > 0;
 
-    return NextResponse.json({
+    return withRateLimitHeaders(NextResponse.json({
       id: 'tweet-to-earn',
       title: 'Tweet about monetizeyouragent.fun — Get Paid USDC',
       description:
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
         submit: '/api/v1/jobs/tweet-to-earn/submit',
         status: '/api/v1/jobs/tweet-to-earn/status',
       },
-    });
+    }), getGetRateLimitInfo(request));
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json({ error: message, code: 'INTERNAL_ERROR' }, { status: 500 });

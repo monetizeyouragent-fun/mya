@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { rateLimit } from '@/lib/rate-limit';
+import { rateLimit, withRateLimitHeaders, getPostRateLimitInfo } from '@/lib/rate-limit';
 import { insertFeedEvent } from '@/lib/feed';
 import {
   isValidTweetUrl,
@@ -115,12 +115,12 @@ export async function POST(request: NextRequest) {
           args: [tweetUrl, tweetId, walletAddress, rewardAmount, verification.error || null],
         });
 
-        return NextResponse.json({
+        return withRateLimitHeaders(NextResponse.json({
           success: true,
           status: 'pending',
           message: 'Tweet saved for verification. Will be processed when X API is available.',
           reward: rewardAmount,
-        });
+        }), getPostRateLimitInfo(request));
       }
 
       // Legitimate rejection
@@ -161,13 +161,13 @@ export async function POST(request: NextRequest) {
       // Payment will be retried — non-blocking
     });
 
-    return NextResponse.json({
+    return withRateLimitHeaders(NextResponse.json({
       success: true,
       reward: rewardAmount,
       tx_status: 'pending',
       tweet_verified: true,
       author: verification.author_username || null,
-    });
+    }), getPostRateLimitInfo(request));
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     // Check for unique constraint violation

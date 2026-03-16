@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import { NextResponse } from 'next/server';
+import { withRateLimitHeaders, getGetRateLimitInfo } from '@/lib/rate-limit';
 import db from '@/lib/db';
 import { getPaymentConfig } from '@/lib/tweet-to-earn';
 

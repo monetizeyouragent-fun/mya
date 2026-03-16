@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { getLimiter } from '@/lib/rate-limit';
+import { getLimiter, withRateLimitHeaders, getGetRateLimitInfo } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,8 +27,8 @@ export async function GET(
     args: [ticketId],
   });
 
-  return NextResponse.json({
+  return withRateLimitHeaders(NextResponse.json({
     ticket: ticketResult.rows[0],
     messages: messagesResult.rows,
-  });
+  }), getGetRateLimitInfo(request));
 }

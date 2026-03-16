@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { getLimiter } from '@/lib/rate-limit';
+import { getLimiter, withRateLimitHeaders, getGetRateLimitInfo } from '@/lib/rate-limit';
 import { errorResponse } from '@/lib/validation';
 
 export async function GET(request: NextRequest) {
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       args: [],
     });
 
-    return NextResponse.json({ data: result.rows });
+    return withRateLimitHeaders(NextResponse.json({ data: result.rows }), getGetRateLimitInfo(request));
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return errorResponse(message, 'INTERNAL_ERROR', 500);

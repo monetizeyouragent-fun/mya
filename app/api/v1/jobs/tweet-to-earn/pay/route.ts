@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
+import { withRateLimitHeaders, getPostRateLimitInfo } from '@/lib/rate-limit';
 import db from '@/lib/db';
 import { insertFeedEvent } from '@/lib/feed';
 import { creditAgentEarning } from '@/lib/agent-stats';
@@ -42,12 +43,12 @@ export async function POST(request: NextRequest) {
     const privateKey = process.env.PAYMENT_PRIVATE_KEY;
     if (!privateKey) {
       // No private key — mark as verified but can't pay yet
-      return NextResponse.json({
+      return withRateLimitHeaders(NextResponse.json({
         success: false,
         message: 'Payment key not configured. Submission verified but payment queued.',
         tx_status: 'queued',
         payment_status: 'pending',
-      });
+      }), getPostRateLimitInfo(request));
     }
 
     // Dynamic import ethers to avoid issues at build time
@@ -99,13 +100,13 @@ export async function POST(request: NextRequest) {
       JSON.stringify({ reward: rewardAmount, tx_hash: txHash })
     );
 
-    return NextResponse.json({
+    return withRateLimitHeaders(NextResponse.json({
       success: true,
       tx_hash: txHash,
       amount: rewardAmount,
       tx_status: 'confirmed',
       payment_status: 'paid',
-    });
+    }), getPostRateLimitInfo(request));
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Payment processing error';
     // Don't leak internal details

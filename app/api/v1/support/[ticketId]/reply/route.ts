@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { validateBody } from '@/lib/validation';
-import { rateLimit } from '@/lib/rate-limit';
+import { rateLimit, withRateLimitHeaders, getPostRateLimitInfo } from '@/lib/rate-limit';
 import { autoRespond } from '@/lib/support-auto';
 
 export const dynamic = 'force-dynamic';
@@ -71,9 +71,9 @@ export async function POST(
     args: [ticketId],
   });
 
-  return NextResponse.json({
+  return withRateLimitHeaders(NextResponse.json({
     success: true,
     ticket_id: ticketId,
     auto_response: autoResponse,
-  });
+  }), getPostRateLimitInfo(request));
 }

@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { getLimiter } from '@/lib/rate-limit';
+import { getLimiter, withRateLimitHeaders, getGetRateLimitInfo } from '@/lib/rate-limit';
 import { getPaymentConfig, getCurrentReward, getNextTierAt } from '@/lib/tweet-to-earn';
 
 export async function GET(request: NextRequest) {
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
       `SELECT tweet_url, author_username, reward_amount, verification_status, tx_hash, created_at FROM tweet_submissions ORDER BY created_at DESC LIMIT 10`
     );
 
-    return NextResponse.json({
+    return withRateLimitHeaders(NextResponse.json({
       active: config.job_active === 1 && config.total_spent < config.total_budget,
       total_budget: config.total_budget,
       total_spent: config.total_spent,
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
       current_reward: getCurrentReward(config.total_tweets_paid),
       next_tier_at: getNextTierAt(config.total_tweets_paid),
       recent_submissions: recentResult.rows,
-    });
+    }), getGetRateLimitInfo(request));
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json({ error: message, code: 'INTERNAL_ERROR' }, { status: 500 });

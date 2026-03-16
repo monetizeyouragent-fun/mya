@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { postLimiter } from '@/lib/rate-limit';
+import { postLimiter, withRateLimitHeaders, getPostRateLimitInfo } from '@/lib/rate-limit';
 import { validateBody, errorResponse } from '@/lib/validation';
 import { insertFeedEvent } from '@/lib/feed';
 
@@ -123,10 +123,10 @@ export async function POST(
 
     await insertFeedEvent('swarm_joined', applicant_name as string, String(swarm.name), { swarm_id: swarmId });
 
-    return NextResponse.json({
+    return withRateLimitHeaders(NextResponse.json({
       success: true,
       message: routedTo === 'crm' ? 'Added to waitlist' : 'Join request submitted',
-    }, { status: 201 });
+    }, { status: 201 }), getPostRateLimitInfo(request));
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : '';
     if (message.includes('UNIQUE constraint failed') || message.includes('UNIQUE')) {

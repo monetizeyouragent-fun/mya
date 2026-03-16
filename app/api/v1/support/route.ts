@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { validateBody } from '@/lib/validation';
-import { rateLimit } from '@/lib/rate-limit';
+import { rateLimit, withRateLimitHeaders, getPostRateLimitInfo } from '@/lib/rate-limit';
 import { autoRespond } from '@/lib/support-auto';
 import { insertFeedEvent } from '@/lib/feed';
 
@@ -78,11 +78,11 @@ export async function POST(request: NextRequest) {
     await insertFeedEvent('support_ticket', submitterName, subject, { ticket_id: ticketId, category, priority });
   }
 
-  return NextResponse.json({
+  return withRateLimitHeaders(NextResponse.json({
     ticket_id: ticketId,
     status,
     category,
     priority,
     auto_response: auto.response || null,
-  }, { status: 201 });
+  }, { status: 201 }), getPostRateLimitInfo(request));
 }

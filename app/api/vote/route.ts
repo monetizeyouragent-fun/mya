@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { createHash } from 'crypto';
-import { postLimiter } from '@/lib/rate-limit';
+import { postLimiter, withRateLimitHeaders, getPostRateLimitInfo } from '@/lib/rate-limit';
 import { errorResponse } from '@/lib/validation';
 import { insertFeedEvent } from '@/lib/feed';
 
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       await db.execute({ sql: `UPDATE entries SET ${col} = ${col} - 1 WHERE id = ?`, args: [entry_id as number] });
 
       if (prev.direction === direction) {
-        return NextResponse.json({ success: true, action: 'removed' });
+        return withRateLimitHeaders(NextResponse.json({ success: true, action: 'removed' }), getPostRateLimitInfo(request));
       }
     }
 
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 
     await insertFeedEvent('vote', fingerprint.slice(0, 8), entryName, { direction, entry_id });
 
-    return NextResponse.json({ success: true, action: 'voted', direction });
+    return withRateLimitHeaders(NextResponse.json({ success: true, action: 'voted', direction }), getPostRateLimitInfo(request));
   } catch {
     return errorResponse('Failed to process vote', 'INTERNAL_ERROR', 500);
   }

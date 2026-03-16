@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { getLimiter } from '@/lib/rate-limit';
+import { getLimiter, withRateLimitHeaders, getGetRateLimitInfo } from '@/lib/rate-limit';
 import { errorResponse, parsePagination, paginatedResponse, deriveContactType } from '@/lib/validation';
 
 // GET /api/v1/discover?skills=scraping,trading&difficulty=Easy&min_potential=1000&category=Earn+Now&limit=10
@@ -215,7 +215,7 @@ export async function GET(req: NextRequest) {
     const offset = (page - 1) * limit;
     const results = opportunities.slice(offset, offset + limit);
 
-    return NextResponse.json({
+    return withRateLimitHeaders(NextResponse.json({
       query: { skills, difficulty, category, min_potential: minPotential },
       ...paginatedResponse(results, total, page, limit),
       _links: {
@@ -225,7 +225,7 @@ export async function GET(req: NextRequest) {
         swarms: '/api/v1/swarms',
         agent_card: '/.well-known/agent.json',
       },
-    });
+    }), getGetRateLimitInfo(req));
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return errorResponse(message, 'INTERNAL_ERROR', 500);
