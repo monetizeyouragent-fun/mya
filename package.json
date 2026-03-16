@@ -1,0 +1,28 @@
+{
+  "name": "monetize-agents-app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "seed": "npx tsx db/seed.ts",
+    "migrate": "npx tsx db/migrate.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@libsql/client": "^0.17.0",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "ethers": "^6.16.0",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}
