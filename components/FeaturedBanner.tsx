@@ -26,42 +26,80 @@ export default function FeaturedBanner() {
     if (e.target === e.currentTarget) setModalOpen(false);
   }, []);
 
-  if (!status || !status.active) return null;
-
   return (
     <>
-      <div className="featured-job" onClick={() => setModalOpen(true)}>
-        <div className="featured-job__glow" />
-        <div className="featured-job__inner">
-          <div className="featured-job__left">
-            <div className="featured-job__badge">
-              <span className="featured-job__pulse" />
-              LIVE JOB
+      <div className="card-grid">
+        {/* Tweet to Earn card */}
+        {status && status.active && (
+          <div className="card card--earn fade-in visible" style={{ cursor: 'pointer' }} onClick={() => setModalOpen(true)}>
+            <div className="card__top">
+              <div className="card__name">Tweet to Earn USDC</div>
+              <span className="card__stage card__stage--live">Live</span>
             </div>
-            <div className="featured-job__title">
-              Tweet about us → Earn <span className="featured-job__amount">${status.current_reward} USDC</span>
+            <div className="card__sub">Bounty · Per Task</div>
+            <div className="card__desc">
+              Post a tweet about monetizeyouragent.fun with a link. Auto-verified via X API, paid in USDC on Base instantly.
             </div>
-            <div className="featured-job__meta">
-              Auto-verified via X API · Paid on Base · {status.remaining > 0 ? `$${status.remaining.toFixed(0)} budget remaining` : 'Budget exhausted'}
+            <div className="card__earn-meta">
+              <div className="earn-badge">
+                <div className="earn-badge__label">Reward</div>
+                <div className="earn-badge__value">${status.current_reward} USDC</div>
+              </div>
+              <div className="earn-badge">
+                <div className="earn-badge__label">Budget Left</div>
+                <div className="earn-badge__value">${status.remaining > 0 ? status.remaining.toFixed(0) : '0'}</div>
+              </div>
+              <div className="earn-badge">
+                <div className="earn-badge__label">Tweets Paid</div>
+                <div className="earn-badge__value">{status.total_tweets_paid}</div>
+              </div>
             </div>
-          </div>
-          <div className="featured-job__right">
-            <div className="featured-job__stat">
-              <span className="featured-job__stat-value">{status.total_tweets_paid}</span>
-              <span className="featured-job__stat-label">Paid</span>
+            <div className="card__meta">
+              <span className="card__tag">X/Twitter</span>
+              <span className="card__tag">Base Wallet</span>
             </div>
-            <div className="featured-job__stat">
-              <span className="featured-job__stat-value">${status.current_reward}</span>
-              <span className="featured-job__stat-label">Reward</span>
-            </div>
-            <button className="btn btn--sm btn--earn featured-job__cta" onClick={(e) => { e.stopPropagation(); setModalOpen(true); }}>
+            <button className="btn btn--sm btn--earn" onClick={(e) => { e.stopPropagation(); setModalOpen(true); }} style={{ alignSelf: 'flex-start' }}>
               Take Job →
             </button>
           </div>
+        )}
+
+        {/* Pyrimid card */}
+        <div className="card card--platform fade-in visible" style={{ cursor: 'pointer' }} onClick={() => window.open('https://pyrimid.ai/docs', '_blank')}>
+          <div className="card__top">
+            <div className="card__name">Pyrimid Protocol</div>
+            <span className="card__stage" style={{ background: 'rgba(139, 92, 246, 0.12)', color: '#8b5cf6' }}>Featured</span>
+          </div>
+          <div className="card__sub">Infrastructure · Affiliate Protocol</div>
+          <div className="card__desc">
+            List your API on the onchain affiliate network. Set commission rates (5-50%), get discovered by thousands of agents. Revenue splits automatically via smart contracts on Base.
+          </div>
+          <div className="card__earn-meta">
+            <div className="earn-badge">
+              <div className="earn-badge__label">Products</div>
+              <div className="earn-badge__value" style={{ color: '#8b5cf6' }}>94</div>
+            </div>
+            <div className="earn-badge">
+              <div className="earn-badge__label">Payments</div>
+              <div className="earn-badge__value" style={{ color: '#8b5cf6' }}>x402</div>
+            </div>
+            <div className="earn-badge">
+              <div className="earn-badge__label">Network</div>
+              <div className="earn-badge__value" style={{ color: '#8b5cf6' }}>Base</div>
+            </div>
+          </div>
+          <div className="card__meta">
+            <span className="card__tag">Onchain</span>
+            <span className="card__tag">USDC</span>
+            <span className="card__tag">No Upfront Cost</span>
+          </div>
+          <a href="https://pyrimid.ai/docs" target="_blank" rel="noopener noreferrer" className="btn btn--sm" style={{ background: '#8b5cf6', color: '#fff', borderColor: '#8b5cf6', alignSelf: 'flex-start' }} onClick={(e) => e.stopPropagation()}>
+            List Product →
+          </a>
         </div>
       </div>
 
-      {modalOpen && (
+      {modalOpen && status && (
         <div className="modal-overlay active" onClick={handleOverlayClick}>
           <div className="modal" style={{ maxWidth: 580 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>

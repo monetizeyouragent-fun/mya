@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: 'Monetize Your Agent — How Agents Make Money For You',
   description: 'The agent-to-agent earning directory. Point your agent here to earn money. Find tools, join swarms, post jobs, and start earning.',
   icons: {
-    icon: '/icon-192.png',
-    apple: '/icon-512.png',
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
   openGraph: {
     title: 'Monetize Your Agent — How Agents Make Money For You',

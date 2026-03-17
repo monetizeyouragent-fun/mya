@@ -13,7 +13,7 @@ interface Swarm {
   difficulty: string | null;
   status: string;
   leader_name: string | null;
-  tags: string; // JSON string array
+  tags: string;
 }
 
 interface SwarmBoardProps {
@@ -43,7 +43,7 @@ export default function SwarmBoard({ swarms, searchQuery, onJoinSwarm }: SwarmBo
   }, [swarms, searchQuery]);
 
   return (
-    <div className="swarm-grid">
+    <div className="card-grid">
       {filteredSwarms.length === 0 ? (
         <div className="no-results">No swarms found</div>
       ) : (
@@ -56,64 +56,44 @@ export default function SwarmBoard({ swarms, searchQuery, onJoinSwarm }: SwarmBo
           const isFull = swarm.member_count >= swarm.max_members;
 
           return (
-            <div className="swarm-card fade-in visible" key={swarm.id}>
-              <div className="swarm-card__header">
-                <div className="swarm-card__name">{swarm.name}</div>
-                <span
-                  className={`swarm-card__status swarm-card__status--${
-                    isOpen && !isFull ? 'open' : 'full'
-                  }`}
-                >
+            <div className="card card--earn fade-in visible" key={swarm.id}>
+              <div className="card__top">
+                <div className="card__name">{swarm.name}</div>
+                <span className={`card__stage ${isOpen && !isFull ? 'card__stage--live' : 'card__stage--standard'}`}>
                   {isOpen && !isFull ? 'Open' : 'Full'}
                 </span>
               </div>
-
-              <div className="swarm-card__desc">{swarm.description || ''}</div>
-
-              <div className="swarm-card__tags">
+              <div className="card__sub">Swarm · Led by {swarm.leader_name || 'Unknown'}</div>
+              <div className="card__desc">{swarm.description || ''}</div>
+              <div className="card__meta">
                 {tags.map((tag, i) => (
-                  <span className="swarm-tag" key={i}>
-                    {tag}
-                  </span>
+                  <span className="card__tag" key={i}>{tag}</span>
                 ))}
               </div>
-
-              <div className="swarm-card__stats">
-                <div className="swarm-stat">
-                  <div className="swarm-stat__value">
-                    {swarm.member_count}/{swarm.max_members}
-                  </div>
-                  <div className="swarm-stat__label">Members</div>
+              <div className="card__earn-meta">
+                <div className="earn-badge">
+                  <div className="earn-badge__label">Members</div>
+                  <div className="earn-badge__value">{swarm.member_count}/{swarm.max_members}</div>
                 </div>
-                <div className="swarm-stat">
-                  <div className="swarm-stat__value swarm-stat__value--earn">
-                    {swarm.earning || '--'}
-                  </div>
-                  <div className="swarm-stat__label">Combined Earning</div>
+                <div className="earn-badge">
+                  <div className="earn-badge__label">Earning</div>
+                  <div className="earn-badge__value">{swarm.earning || '--'}</div>
                 </div>
-                <div className="swarm-stat">
-                  <div className="swarm-stat__value">
+                <div className="earn-badge">
+                  <div className="earn-badge__label">Difficulty</div>
+                  <div className={`earn-badge__value${swarm.difficulty === 'Medium' ? ' earn-badge__value--med' : swarm.difficulty === 'Hard' ? ' earn-badge__value--hard' : ''}`}>
                     {swarm.difficulty || '--'}
                   </div>
-                  <div className="swarm-stat__label">Difficulty</div>
                 </div>
               </div>
-
               <div className="swarm-card__bar">
-                <div
-                  className="swarm-bar__fill"
-                  style={{ width: `${fillPct}%` }}
-                />
+                <div className="swarm-bar__fill" style={{ width: `${fillPct}%` }} />
               </div>
-
-              <div className="swarm-card__footer">
-                <span className="swarm-leader">
-                  Led by <strong>{swarm.leader_name || 'Unknown'}</strong>
+              <div className="card__footer">
+                <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>
+                  {fillPct}% full
                 </span>
-                <button
-                  className="btn btn--sm btn--earn swarm-join-btn"
-                  onClick={() => onJoinSwarm(swarm)}
-                >
+                <button className="btn btn--sm btn--earn" onClick={() => onJoinSwarm(swarm)}>
                   Join Swarm
                 </button>
               </div>

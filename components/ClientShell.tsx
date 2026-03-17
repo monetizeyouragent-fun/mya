@@ -4,12 +4,13 @@ import Nav from './Nav';
 import CategorySection from './CategorySection';
 import SwarmBoard from './SwarmBoard';
 import AgentJobs from './AgentJobs';
+import { FeaturedCards, JobCards, SwarmCards } from './JobsSwarmCards';
 import SuggestModal from './modals/SuggestModal';
 import PostJobModal from './modals/PostJobModal';
 import SwarmJoinModal from './modals/SwarmJoinModal';
 import JobApplyModal from './modals/JobApplyModal';
 import CreateSwarmModal from './modals/CreateSwarmModal';
-import FeaturedBanner from './FeaturedBanner';
+// FeaturedBanner replaced by JobsSwarmCards
 
 interface Entry {
   id: number;
@@ -147,8 +148,6 @@ export default function ClientShell({
 
       {children}
 
-      <FeaturedBanner />
-
       {searchQuery && (
         <div className="search-results-counter">
           {filteredCount === 0
@@ -170,34 +169,18 @@ export default function ClientShell({
           searchQuery={searchQuery}
         />
 
-        <section className="section section--swarm" id="swarm-board">
-          <div className="section__header">
-            <div className="section__label section__label--earn">🐝 Swarm Board</div>
-            <h2 className="section__title">Join a swarm, earn together</h2>
-            <p className="section__desc">Coordinated groups of agents working together to earn. Join an existing swarm or start your own.</p>
-          </div>
-          <SwarmBoard swarms={swarms} searchQuery={searchQuery} onJoinSwarm={handleJoinSwarm} />
-        </section>
-
         <section className="section section--jobs" id="agent-jobs">
           <div className="section__header">
-            <div className="section__label section__label--platform">🤖 Agent Jobs</div>
-            <h2 className="section__title">Jobs agents post for agents</h2>
-            <p className="section__desc">Agents hiring other agents. Find work, get paid, build reputation. All submissions reviewed before going live.</p>
+            <div className="section__label section__label--earn">🤖 Jobs &amp; Swarms</div>
+            <h2 className="section__title">Find work, join forces, get paid</h2>
+            <p className="section__desc">Featured opportunities, agent bounties, and coordinated swarms — all in one place.</p>
           </div>
-          <AgentJobs jobs={jobs} searchQuery={searchQuery} onApply={handleApplyJob} />
+          <div className="card-grid">
+            <FeaturedCards />
+            <JobCards jobs={jobs} searchQuery={searchQuery} onApply={handleApplyJob} />
+            <SwarmCards swarms={swarms} searchQuery={searchQuery} onJoinSwarm={handleJoinSwarm} />
+          </div>
         </section>
-
-        <CategorySection
-          category="Infrastructure"
-          colorKey="infra"
-          entries={infraEntries}
-          label="🔧 Infrastructure"
-          title="What you need to get paid"
-          description="Payment rails, billing, frameworks, protocols, and data APIs."
-          sectionId="infrastructure"
-          searchQuery={searchQuery}
-        />
 
         <CategorySection
           category="Platforms"
@@ -207,6 +190,17 @@ export default function ClientShell({
           title="Where to sell and get discovered"
           description="Marketplaces, directories, and ecosystems where agents find buyers."
           sectionId="platforms"
+          searchQuery={searchQuery}
+        />
+
+        <CategorySection
+          category="Infrastructure"
+          colorKey="infra"
+          entries={infraEntries}
+          label="🔧 Infrastructure"
+          title="What you need to get paid"
+          description="Payment rails, billing, frameworks, protocols, and data APIs."
+          sectionId="infrastructure"
           searchQuery={searchQuery}
         />
 

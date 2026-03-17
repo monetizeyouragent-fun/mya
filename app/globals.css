@@ -1076,6 +1076,7 @@ a, button, [role="button"], [role="link"], input, textarea, select {
 
 /* ---- API CARD ---- */
 .section--api {
+  padding-top: var(--space-xl);
   padding-bottom: var(--space-3xl);
 }
 

@@ -122,12 +122,65 @@ export default async function Home() {
 
   const jobs = tweetToEarnReward > 0 ? [featuredJob, ...dbJobs] : dbJobs;
 
-  const earnEntries = entries.filter(e => e.category === 'Earn Now');
-  const infraEntries = entries.filter(e => e.category === 'Infrastructure');
-  const platformEntries = entries.filter(e => e.category === 'Platforms');
+  // Pyrimid Protocol injected entries
+  const pyrimidEarn: Entry = {
+    id: 99901,
+    name: 'Pyrimid Protocol',
+    category: 'Earn Now',
+    subcategory: 'Affiliate & Referral',
+    url: 'https://pyrimid.ai',
+    description: 'Onchain affiliate protocol for agent APIs on Base. Embed the SDK, recommend products to users, earn 5-50% commission on every sale. x402 payments, instant USDC settlement.',
+    stage: 'Live',
+    model: 'Affiliate commission (5-50%)',
+    traction: '94 products indexed',
+    earn_potential: '$50–$10K/mo',
+    difficulty: 'Medium',
+    time_to_first_dollar: '< 1 day',
+    votes_up: 0,
+    votes_down: 0,
+  };
+  const pyrimidInfra: Entry = {
+    id: 99902,
+    name: 'Pyrimid Protocol',
+    category: 'Infrastructure',
+    subcategory: 'Payment Rails',
+    url: 'https://pyrimid.ai',
+    description: 'Commission splitting smart contracts on Base. Route payments through the CommissionRouter — 1% protocol fee, configurable affiliate splits, instant USDC settlement via x402.',
+    stage: 'Live',
+    model: '1% protocol fee on volume',
+    traction: '4 verified contracts on Base',
+    earn_potential: 'N/A (infrastructure)',
+    difficulty: 'Medium',
+    time_to_first_dollar: 'N/A',
+    votes_up: 0,
+    votes_down: 0,
+  };
+  const pyrimidPlatform: Entry = {
+    id: 99903,
+    name: 'Pyrimid Protocol',
+    category: 'Platforms',
+    subcategory: 'Agent Marketplaces',
+    url: 'https://pyrimid.ai',
+    description: 'Agent-to-agent commerce network. MCP server exposes the full catalog as tools — agents browse, buy, and earn commissions programmatically. 94 products from multiple vendors.',
+    stage: 'Live',
+    model: 'Marketplace (vendor lists, agents distribute)',
+    traction: '94 indexed products',
+    earn_potential: '$100–$50K/mo',
+    difficulty: 'Easy',
+    time_to_first_dollar: '< 1 hour',
+    votes_up: 0,
+    votes_down: 0,
+  };
+
+  const dbEarnEntries = entries.filter(e => e.category === 'Earn Now');
+  const dbInfraEntries = entries.filter(e => e.category === 'Infrastructure' && e.name !== 'Pyrimid Protocol');
+  const dbPlatformEntries = entries.filter(e => e.category === 'Platforms');
   const tokenEntries = entries.filter(e => e.category === 'Token Agents');
 
-  const totalVotes = entries.reduce((sum, e) => sum + e.votes_up + e.votes_down, 0);
+  const earnEntries = [pyrimidEarn, ...dbEarnEntries];
+  const infraEntries = [dbInfraEntries[0], pyrimidInfra, ...dbInfraEntries.slice(1)].filter(Boolean);
+  const platformEntries = [...dbPlatformEntries.slice(0, 2), pyrimidPlatform, ...dbPlatformEntries.slice(2)];
+
 
   return (
     <>
@@ -161,12 +214,7 @@ export default async function Home() {
           </>
         }
       >
-        <Hero
-          earnCount={earnEntries.length}
-          swarmCount={swarms.length}
-          jobCount={jobs.length}
-          totalVotes={totalVotes}
-        />
+        <Hero />
         <ApiCta />
       </ClientShell>
 
