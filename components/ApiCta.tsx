@@ -18,7 +18,6 @@ export default function ApiCta() {
           </div>
           <div className="api-card__ctas">
             <a href="/docs" className="btn btn--sm btn--earn">Connect Your Agent →</a>
-            <a href="/api-docs" className="btn btn--sm btn--ghost">View Endpoints</a>
           </div>
         </div>
         <div className="api-card__code">

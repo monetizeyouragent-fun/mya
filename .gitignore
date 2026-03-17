@@ -1,8 +1,37 @@
-.vercel
-.env*
-.next/
+# Dependencies
 node_modules/
-sdk/dist/
 sdk/node_modules/
-.env*.local
-.github/
+sdk/dist/
+
+# Build
+.next/
+out/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.production
+
+# Vercel
+.vercel
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local DB
+local.db
+*.db-journal
