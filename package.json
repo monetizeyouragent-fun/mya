@@ -4,6 +4,8 @@
   "description": "",
   "scripts": {
     "dev": "next dev",
+    "check-routes": "npx tsx scripts/check-routes.ts",
+    "prebuild": "npm run check-routes",
     "build": "next build",
     "start": "next start",
     "seed": "npx tsx db/seed.ts",

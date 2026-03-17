@@ -1,0 +1,5 @@
+{
+  "protocols": ["a2a", "mcp"],
+  "mcp_endpoint": "/mcp",
+  "api_docs": "/api/docs"
+}

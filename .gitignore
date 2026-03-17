@@ -4,3 +4,4 @@
 node_modules/
 sdk/dist/
 sdk/node_modules/
+.env*.local

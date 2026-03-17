@@ -105,7 +105,7 @@ export function parsePagination(searchParams: URLSearchParams): { page: number; 
   let limit = parseInt(searchParams.get('limit') || '20');
   if (isNaN(page) || page < 1) page = 1;
   if (isNaN(limit)) limit = 20;
-  else if (limit < 1) limit = 1;
+  else if (limit < 0) limit = 0;
   else if (limit > 100) limit = 100;
   const offset = (page - 1) * limit;
   return { page, limit, offset };
