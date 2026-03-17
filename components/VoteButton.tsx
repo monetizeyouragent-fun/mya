@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useToast } from './Toast';
 
 interface VoteButtonProps {
   entryId: number;
@@ -10,6 +11,7 @@ export default function VoteButton({ entryId, initialVotes }: VoteButtonProps) {
   const [votes, setVotes] = useState(initialVotes);
   const [userVote, setUserVote] = useState<'up' | 'down' | null>(null);
   const [bumped, setBumped] = useState(false);
+  const { showToast } = useToast();
 
   const handleVote = async (direction: 'up' | 'down') => {
     const prev = userVote;
@@ -30,12 +32,17 @@ export default function VoteButton({ entryId, initialVotes }: VoteButtonProps) {
     setTimeout(() => setBumped(false), 300);
 
     try {
-      await fetch('/api/vote', {
+      const res = await fetch('/api/vote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ entry_id: entryId, direction }),
       });
-    } catch {}
+      if (res.ok) {
+        showToast(direction === 'up' ? 'Upvoted!' : 'Downvoted');
+      }
+    } catch {
+      showToast('Vote failed', 'error');
+    }
   };
 
   return (
