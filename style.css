@@ -132,6 +132,73 @@
   gap: var(--space-sm);
 }
 
+.nav__menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 20px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.nav__menu-btn:hover {
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+
+.mobile-menu {
+  display: none;
+}
+
+.mobile-menu.active {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: var(--color-bg);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+}
+
+.mobile-menu a,
+.mobile-menu button {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: color 0.15s;
+}
+
+.mobile-menu a:hover,
+.mobile-menu button:hover {
+  color: var(--color-text);
+}
+
+.mobile-menu__close {
+  position: absolute;
+  top: var(--space-lg);
+  right: var(--space-lg);
+  font-size: 28px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .nav__search-btn {
   width: 36px;
   height: 36px;
@@ -1299,6 +1366,22 @@
 
   .nav__actions {
     gap: 4px;
+  }
+
+  .nav__actions .btn--ghost {
+    display: none !important;
+  }
+
+  .nav__actions .btn--earn {
+    display: none !important;
+  }
+
+  .nav__search-btn {
+    display: flex !important;
+  }
+
+  .nav__menu-btn {
+    display: flex !important;
   }
 
   .btn--sm {
