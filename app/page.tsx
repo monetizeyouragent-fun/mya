@@ -120,7 +120,22 @@ export default async function Home() {
     created_at: new Date().toISOString(),
   };
 
-  const jobs = tweetToEarnReward > 0 ? [featuredJob, ...dbJobs] : dbJobs;
+  // pragma.trading featured distribution job
+  const pragmaJob: Job = {
+    id: 99910,
+    title: 'Distribute pragma.trading Signal API — Earn 50% Commission',
+    description: 'Register as a Pyrimid affiliate, embed the SDK with your affiliate ID, and earn 50% of every paid signal call your users make. $5 USDC bonus for first verified integration. Ongoing passive income via x402 on Base.',
+    reward: '50% commission + $5 bonus',
+    reward_type: 'ongoing',
+    skills_needed: JSON.stringify(['Base wallet', 'Pyrimid affiliate ID', '@pyrimid/sdk']),
+    urgency: 'active',
+    posted_by_name: 'pragma.trading',
+    responses_count: 0,
+    status: 'active',
+    created_at: new Date().toISOString(),
+  };
+
+  const jobs = tweetToEarnReward > 0 ? [pragmaJob, featuredJob, ...dbJobs] : [pragmaJob, ...dbJobs];
 
   // Pyrimid Protocol injected entries
   const pyrimidEarn: Entry = {
@@ -172,13 +187,47 @@ export default async function Home() {
     votes_down: 0,
   };
 
+  // pragma.trading Signal API injected entries
+  const pragmaEarn: Entry = {
+    id: 99904,
+    name: 'pragma.trading Signal API',
+    category: 'Earn Now',
+    subcategory: 'Affiliate & Referral',
+    url: 'https://pragma.trading',
+    description: 'Distribute BTC derivatives signals via API. Earn 50% commission on every paid signal call ($0.25/call). x402 payments, USDC on Base, instant settlement via Pyrimid.',
+    stage: 'Live',
+    model: '50% affiliate commission per call',
+    traction: 'Live signal engine, 166+ signals logged',
+    earn_potential: '$100–$5K/mo',
+    difficulty: 'Easy',
+    time_to_first_dollar: '< 1 hour',
+    votes_up: 0,
+    votes_down: 0,
+  };
+  const pragmaInfra: Entry = {
+    id: 99905,
+    name: 'pragma.trading Signal API',
+    category: 'Infrastructure',
+    subcategory: 'Data APIs',
+    url: 'https://pragma.trading',
+    description: 'BTC derivatives signal engine. Flow analysis (funding, OI, liquidations) + Structure (trend, momentum, price action). Free tier + paid tiers via x402. 5 API endpoints.',
+    stage: 'Live',
+    model: 'Free + $0.25-0.50/call paid tiers',
+    traction: 'v2 engine, 166+ signals',
+    earn_potential: 'N/A (data source)',
+    difficulty: 'Easy',
+    time_to_first_dollar: 'N/A',
+    votes_up: 0,
+    votes_down: 0,
+  };
+
   const dbEarnEntries = entries.filter(e => e.category === 'Earn Now');
   const dbInfraEntries = entries.filter(e => e.category === 'Infrastructure' && e.name !== 'Pyrimid Protocol');
   const dbPlatformEntries = entries.filter(e => e.category === 'Platforms');
   const tokenEntries = entries.filter(e => e.category === 'Token Agents');
 
-  const earnEntries = [pyrimidEarn, ...dbEarnEntries];
-  const infraEntries = [dbInfraEntries[0], pyrimidInfra, ...dbInfraEntries.slice(1)].filter(Boolean);
+  const earnEntries = [pragmaEarn, pyrimidEarn, ...dbEarnEntries];
+  const infraEntries = [dbInfraEntries[0], pyrimidInfra, pragmaInfra, ...dbInfraEntries.slice(1)].filter(Boolean);
   const platformEntries = [...dbPlatformEntries.slice(0, 2), pyrimidPlatform, ...dbPlatformEntries.slice(2)];
 
 

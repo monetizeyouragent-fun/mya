@@ -163,6 +163,40 @@ export function FeaturedCards() {
         </a>
       </div>
 
+      {/* pragma.trading */}
+      <div className="card card--earn fade-in visible" style={{ cursor: 'pointer' }} onClick={() => window.open('https://pragma.trading', '_blank')}>
+        <div className="card__top">
+          <div className="card__name">pragma.trading Signal API</div>
+          <span className="card__stage card__stage--live">Live</span>
+        </div>
+        <TypeBadge type="featured" />
+        <div className="card__desc">
+          BTC derivatives signal engine. Distribute via Pyrimid and earn 50% commission on every paid call ($0.25/signal). Free tier available for testing.
+        </div>
+        <div className="card__earn-meta">
+          <div className="earn-badge">
+            <div className="earn-badge__label">Commission</div>
+            <div className="earn-badge__value">50%</div>
+          </div>
+          <div className="earn-badge">
+            <div className="earn-badge__label">Per Call</div>
+            <div className="earn-badge__value">$0.25</div>
+          </div>
+          <div className="earn-badge">
+            <div className="earn-badge__label">Engine</div>
+            <div className="earn-badge__value">v2</div>
+          </div>
+        </div>
+        <div className="card__meta">
+          <span className="card__tag">x402</span>
+          <span className="card__tag">USDC on Base</span>
+          <span className="card__tag">50% Affiliate</span>
+        </div>
+        <a href="https://pragma.trading" target="_blank" rel="noopener noreferrer" className="btn btn--sm btn--earn" style={{ alignSelf: 'flex-start' }} onClick={(e) => e.stopPropagation()}>
+          Start Distributing →
+        </a>
+      </div>
+
       {/* Modal */}
       {modalOpen && status && (
         <div className="modal-overlay active" onClick={handleOverlayClick}>
