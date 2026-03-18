@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import VoteButton from './VoteButton';
 
 interface Entry {
@@ -91,6 +91,7 @@ export default function CategorySection({
   searchQuery,
 }: CategorySectionProps) {
   const [activeSub, setActiveSub] = useState<string>('All');
+  const [expanded, setExpanded] = useState(false);
 
   const subcategories = useMemo(() => {
     const subs = new Set<string>();
@@ -99,6 +100,12 @@ export default function CategorySection({
     });
     return Array.from(subs);
   }, [entries]);
+
+  const [voteOverrides, setVoteOverrides] = useState<Record<number, number>>({});
+
+  const handleVoteChange = useCallback((entryId: number, delta: number) => {
+    setVoteOverrides(prev => ({ ...prev, [entryId]: (prev[entryId] || 0) + delta }));
+  }, []);
 
   const filteredEntries = useMemo(() => {
     let filtered = entries;
@@ -111,11 +118,15 @@ export default function CategorySection({
       filtered = filtered.filter((e) => matchSearch(e, searchQuery.toLowerCase()));
     }
 
-    // Sort by net votes descending
-    filtered.sort((a, b) => (b.votes_up - b.votes_down) - (a.votes_up - a.votes_down));
+    // Sort by net votes descending (including local overrides)
+    filtered = [...filtered].sort((a, b) => {
+      const aNet = (a.votes_up - a.votes_down) + (voteOverrides[a.id] || 0);
+      const bNet = (b.votes_up - b.votes_down) + (voteOverrides[b.id] || 0);
+      return bNet - aNet;
+    });
 
     return filtered;
-  }, [entries, activeSub, searchQuery]);
+  }, [entries, activeSub, searchQuery, voteOverrides]);
 
   const handleTabClick = (sub: string) => {
     setActiveSub(sub);
@@ -158,7 +169,7 @@ export default function CategorySection({
         {filteredEntries.length === 0 ? (
           <div className="no-results">No results found</div>
         ) : (
-          filteredEntries.map((entry) => {
+          (expanded ? filteredEntries : filteredEntries.slice(0, 9)).map((entry) => {
             const stageClass = getStageClass(entry.stage);
             const netVotes = entry.votes_up - entry.votes_down;
             const hasEarnMeta =
@@ -234,7 +245,7 @@ export default function CategorySection({
                 )}
 
                 <div className="card__footer">
-                  <VoteButton entryId={entry.id} initialVotes={netVotes} />
+                  <VoteButton entryId={entry.id} initialVotes={netVotes} onVoteChange={handleVoteChange} />
                   {linkUrl && (
                     <a
                       href={linkUrl}
@@ -251,6 +262,16 @@ export default function CategorySection({
           })
         )}
       </div>
+      {!expanded && filteredEntries.length > 9 && (
+        <div style={{ textAlign: 'center', marginTop: 16 }}>
+          <button
+            className="btn btn--sm btn--ghost"
+            onClick={() => setExpanded(true)}
+          >
+            Show all {filteredEntries.length} entries →
+          </button>
+        </div>
+      )}
     </section>
   );
 }

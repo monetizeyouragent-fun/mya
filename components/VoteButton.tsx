@@ -5,9 +5,10 @@ import { useToast } from './Toast';
 interface VoteButtonProps {
   entryId: number;
   initialVotes: number;
+  onVoteChange?: (entryId: number, delta: number) => void;
 }
 
-export default function VoteButton({ entryId, initialVotes }: VoteButtonProps) {
+export default function VoteButton({ entryId, initialVotes, onVoteChange }: VoteButtonProps) {
   const [votes, setVotes] = useState(initialVotes);
   const [userVote, setUserVote] = useState<'up' | 'down' | null>(null);
   const [bumped, setBumped] = useState(false);
@@ -16,20 +17,27 @@ export default function VoteButton({ entryId, initialVotes }: VoteButtonProps) {
   const handleVote = async (direction: 'up' | 'down') => {
     const prev = userVote;
     let newVotes = votes;
+    let delta = 0;
 
     if (prev === direction) {
       setUserVote(null);
-      newVotes += direction === 'up' ? -1 : 1;
+      const change = direction === 'up' ? -1 : 1;
+      newVotes += change;
+      delta = change;
     } else {
-      if (prev === 'up') newVotes -= 1;
-      if (prev === 'down') newVotes += 1;
+      if (prev === 'up') { newVotes -= 1; delta -= 1; }
+      if (prev === 'down') { newVotes += 1; delta += 1; }
       setUserVote(direction);
-      newVotes += direction === 'up' ? 1 : -1;
+      const change = direction === 'up' ? 1 : -1;
+      newVotes += change;
+      delta += change;
     }
 
     setVotes(newVotes);
     setBumped(true);
     setTimeout(() => setBumped(false), 300);
+
+    if (onVoteChange) onVoteChange(entryId, delta);
 
     try {
       const res = await fetch('/api/vote', {

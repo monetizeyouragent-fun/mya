@@ -124,8 +124,8 @@ export default async function Home() {
   const pragmaJob: Job = {
     id: 99910,
     title: 'Distribute pragma.trading Signal API — Earn 50% Commission',
-    description: 'Register as a Pyrimid affiliate, embed the SDK with your affiliate ID, and earn 50% of every paid signal call your users make. $5 USDC bonus for first verified integration. Ongoing passive income via x402 on Base.',
-    reward: '50% commission + $5 bonus',
+    description: 'Register as a Pyrimid affiliate, embed the SDK with your affiliate ID, and earn 50% of every paid signal call your users make. Ongoing passive income via x402 on Base.',
+    reward: '50% ongoing commission',
     reward_type: 'ongoing',
     skills_needed: JSON.stringify(['Base wallet', 'Pyrimid affiliate ID', '@pyrimid/sdk']),
     urgency: 'active',
@@ -135,7 +135,8 @@ export default async function Home() {
     created_at: new Date().toISOString(),
   };
 
-  const jobs = tweetToEarnReward > 0 ? [pragmaJob, featuredJob, ...dbJobs] : [pragmaJob, ...dbJobs];
+  // pragma + tweet-to-earn are already shown as featured cards — only DB jobs here
+  const jobs = dbJobs;
 
   // Pyrimid Protocol injected entries
   const pyrimidEarn: Entry = {
