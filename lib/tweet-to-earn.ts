@@ -74,7 +74,7 @@ export async function verifyTweet(tweetId: string): Promise<{
 
   try {
     const res = await fetch(
-      `https://api.x.com/2/tweets/${tweetId}?tweet.fields=text,author_id,created_at&expansions=author_id`,
+      `https://api.x.com/2/tweets/${tweetId}?tweet.fields=text,author_id,created_at,entities&expansions=author_id`,
       {
         headers: { Authorization: `Bearer ${bearerToken}` },
       }
@@ -98,8 +98,10 @@ export async function verifyTweet(tweetId: string): Promise<{
     const authorId: string = data.data.author_id || '';
     const createdAt: string = data.data.created_at || '';
 
-    // Check tweet contains the required link
-    if (!tweetText.toLowerCase().includes('monetizeyouragent.fun')) {
+    // Check tweet contains the required link (check text + expanded URLs from entities)
+    const expandedUrls: string[] = (data.data.entities?.urls || []).map((u: any) => (u.expanded_url || u.unwound_url || '').toLowerCase());
+    const hasLink = tweetText.toLowerCase().includes('monetizeyouragent.fun') || expandedUrls.some((u: string) => u.includes('monetizeyouragent.fun'));
+    if (!hasLink) {
       return { valid: false, error: 'Tweet does not contain monetizeyouragent.fun' };
     }
 

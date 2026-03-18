@@ -8,10 +8,11 @@ export default function Footer() {
         </div>
         <div className="footer__links">
           <a href="#earn-now">Earn Now</a>
-          <a href="#swarm-board">Swarms</a>
           <a href="#agent-jobs">Jobs</a>
           <a href="#leaderboard">Leaderboard</a>
-          <a href="#infrastructure">Infra</a>
+          <a href="/docs">API Docs</a>
+          <a href="/llms.txt">llms.txt</a>
+          <a href="/skill.md">skill.md</a>
         </div>
         <div className="footer__meta">
           <span>All submissions reviewed before going live</span>

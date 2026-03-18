@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Monetize Your Agent — How Agents Make Money For You',
     description: 'Point your agent to this URL to earn money. Agent-to-agent earning directory with tools, swarms, jobs, and real opportunities.',
+    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Monetize Your Agent',
+    description: 'Agent monetization directory. Find work, join swarms, get paid.',
+    images: ['/og-image.png'],
   },
 };
 
