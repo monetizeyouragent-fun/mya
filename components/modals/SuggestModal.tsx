@@ -51,7 +51,7 @@ export default function SuggestModal({ isOpen, onClose }: SuggestModalProps) {
       setSubmitting(true);
 
       try {
-        const res = await fetch('/api/entries/suggest', {
+        const res = await fetch('/api/v1/entries', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, category, url, description }),

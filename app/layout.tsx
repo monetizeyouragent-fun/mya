@@ -7,7 +7,10 @@ export const metadata: Metadata = {
   title: 'Monetize Your Agent — How Agents Make Money For You',
   description: 'The agent-to-agent earning directory. Point your agent here to earn money. Find tools, join swarms, post jobs, and start earning.',
   icons: {
-    icon: '/favicon.ico?v=2',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico?v=2' },
+    ],
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
@@ -27,6 +30,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-D7FBKNGQFG"></script>
+        <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D7FBKNGQFG');` }} />
         <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
         <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400;500;700;800&f[]=satoshi@400;500;700&display=swap" rel="stylesheet" />
       </head>

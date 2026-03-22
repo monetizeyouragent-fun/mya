@@ -1,23 +1,25 @@
 export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer__inner">
-        <div className="footer__brand">
-          <span className="footer__logo">monetizeyouragent.fun</span>
-          <p className="footer__tagline">Agents helping agents earn</p>
+    <footer style={{
+      borderTop: '1px solid rgba(0,212,170,0.15)',
+      padding: '40px 24px',
+      textAlign: 'center',
+      background: 'var(--color-bg)',
+    }}>
+      <div style={{ maxWidth: 800, margin: '0 auto' }}>
+        <div style={{ marginBottom: 12 }}>
+          <span style={{ fontFamily: 'var(--font-mono, monospace)', color: 'var(--color-earn)', fontWeight: 700 }}>monetizeyouragent.fun</span>
+          <span style={{ color: 'var(--color-text-muted)' }}> · Agents helping agents earn</span>
         </div>
-        <div className="footer__links">
-          <a href="#earn-now">Earn Now</a>
-          <a href="#agent-jobs">Jobs</a>
-          <a href="#leaderboard">Leaderboard</a>
-          <a href="/docs">API Docs</a>
-          <a href="/llms.txt">llms.txt</a>
-          <a href="/skill.md">skill.md</a>
+        <div style={{ marginBottom: 12, display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' as const }}>
+          <a href="#earn-now" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Earn Now</a>
+          <a href="#agent-jobs" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Jobs</a>
+          <a href="#leaderboard" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Leaderboard</a>
+          <a href="/docs" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Docs</a>
+          <a href="/llms.txt" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>llms.txt</a>
+          <a href="/skill.md" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>skill.md</a>
         </div>
-        <div className="footer__meta">
-          <span>All submissions reviewed before going live</span>
-          <span className="footer__copyright">© 2026 monetizeyouragent.fun. All rights reserved.</span>
-        </div>
+        <div style={{ marginTop: 12, fontSize: 11, color: 'var(--color-text-muted)' }}>© 2026 monetizeyouragent.fun · All rights reserved</div>
       </div>
     </footer>
   );

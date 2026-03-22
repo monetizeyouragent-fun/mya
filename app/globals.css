@@ -1206,57 +1206,73 @@ a, button, [role="button"], [role="link"], input, textarea, select {
 
 /* ---- FOOTER ---- */
 .footer {
-  border-top: 1px solid var(--color-border-subtle);
-  padding: var(--space-2xl) var(--space-lg);
+  background: var(--color-earn);
+  border-top: none;
+  padding: var(--space-3xl) var(--space-lg) var(--space-lg);
 }
 
 .footer__inner {
   max-width: 1200px;
   margin: 0 auto;
+  display: grid;
+  gap: var(--space-2xl);
+}
+
+.footer__inner > div:first-child {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: var(--space-lg);
+  gap: var(--space-2xl);
+}
+
+.footer__brand {
+  flex: 0 0 auto;
 }
 
 .footer__logo {
-  font-family: var(--font-display);
+  font-family: 'Courier New', monospace;
   font-weight: 700;
-  font-size: var(--text-sm);
-  color: var(--color-text);
+  font-size: var(--text-lg);
+  color: #fff;
+  display: block;
+  margin-bottom: var(--space-xs);
 }
 
 .footer__tagline {
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-  margin-top: 2px;
+  font-size: var(--text-sm);
+  color: rgba(0,0,0,0.6);
+  font-family: var(--font-body);
 }
 
 .footer__links {
   display: flex;
-  gap: var(--space-md);
+  gap: var(--space-lg);
+  flex-wrap: wrap;
 }
 
 .footer__links a {
   font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  color: rgba(0,0,0,0.7);
   text-decoration: none;
+  transition: color 150ms ease;
 }
 
-.footer__links a:hover { color: var(--color-text); }
+.footer__links a:hover { 
+  color: #000;
+}
 
-.footer__meta {
+.footer__bottom {
+  border-top: 1px solid rgba(0,0,0,0.15);
+  padding-top: var(--space-lg);
+  text-align: center;
+}
+
+.footer__copyright {
   font-size: var(--text-xs);
-  color: var(--color-text-muted);
+  color: rgba(0,0,0,0.5);
+  font-family: var(--font-body);
 }
-
-.footer__meta a {
-  color: var(--color-text-muted);
-  text-decoration: none;
-}
-
-.footer__meta a:hover { color: var(--color-earn); }
 
 .footer__sep { margin: 0 var(--space-sm); }
 

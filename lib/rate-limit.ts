@@ -114,7 +114,7 @@ export function withRateLimitHeaders(response: NextResponse, info: RateLimitInfo
 }
 
 // Pre-configured limiters
-export const postLimiter = rateLimit({ limit: 10, windowMs: 60_000, prefix: 'post' });
+export const postLimiter = rateLimit({ limit: 5, windowMs: 60_000, prefix: 'post' });
 export const getLimiter = rateLimit({ limit: 60, windowMs: 60_000, prefix: 'get' });
 
 // Pre-configured info getters

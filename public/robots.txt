@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /api/v1/
+Allow: /.well-known/
+Allow: /llms.txt
+Allow: /skill.md
+Allow: /agent.json
+
+Disallow: /api/admin/
+
+Sitemap: https://monetizeyouragent.fun/sitemap.xml

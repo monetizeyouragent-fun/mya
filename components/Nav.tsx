@@ -58,6 +58,9 @@ export default function Nav({ onSuggest, onPostJob, onCreateSwarm, onSearch }: N
       <nav className="nav" id="nav">
         <div className="nav__inner">
           <a href="#" className="nav__logo" aria-label="Monetize Agents home">
+            <svg width="24" height="24" viewBox="0 0 512 512" fill="none" style={{ marginRight: '8px', verticalAlign: 'middle' }}>
+              <rect x="168" y="168" width="176" height="176" rx="12" fill="#00d4aa" transform="rotate(45 256 256)"/>
+            </svg>
             <span>monetizeyouragent<span className="logo-dot">.fun</span></span>
           </a>
           <div className="nav__links">
