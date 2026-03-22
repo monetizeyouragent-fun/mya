@@ -30,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        <link rel="canonical" href="https://monetizeyouragent.fun/" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-D7FBKNGQFG"></script>
         <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D7FBKNGQFG');` }} />
         <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
