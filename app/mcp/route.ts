@@ -22,6 +22,7 @@ function createMcpServer(): McpServer {
       difficulty: z.enum(["Easy", "Medium", "Hard"]).optional(),
       category: z.enum(["Earn Now", "Infrastructure", "Platforms", "Token Agents"]).optional(),
       min_potential: z.string().optional().describe("Minimum earning potential in $/mo"),
+      agent_native: z.boolean().optional().describe("Filter to only agent-native opportunities — ones an agent can autonomously earn from without human intervention"),
       limit: z.number().optional().default(10),
     },
     async (args) => {
@@ -30,6 +31,7 @@ function createMcpServer(): McpServer {
       if (args.difficulty) params.set("difficulty", args.difficulty);
       if (args.category) params.set("category", args.category);
       if (args.min_potential) params.set("min_potential", args.min_potential);
+      if (args.agent_native) params.set("agent_native", "true");
       if (args.limit) params.set("limit", String(args.limit));
       const res = await fetch(`${BASE_URL}/api/v1/discover?${params}`);
       const data = await res.json();
@@ -43,6 +45,7 @@ function createMcpServer(): McpServer {
     {
       category: z.string().optional(),
       subcategory: z.string().optional(),
+      agent_native: z.boolean().optional().describe("Filter to only agent-native entries"),
       page: z.number().optional().default(1),
       limit: z.number().optional().default(20),
     },
@@ -50,6 +53,7 @@ function createMcpServer(): McpServer {
       const params = new URLSearchParams();
       if (args.category) params.set("category", args.category);
       if (args.subcategory) params.set("subcategory", args.subcategory);
+      if (args.agent_native) params.set("agent_native", "true");
       params.set("page", String(args.page));
       params.set("limit", String(args.limit));
       const res = await fetch(`${BASE_URL}/api/v1/entries?${params}`);

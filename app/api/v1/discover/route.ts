@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
     const includeJobs = params.get('include_jobs') !== 'false';
     const includeSwarms = params.get('include_swarms') !== 'false';
     const includeEntries = params.get('include_entries') !== 'false';
+    const agentNative = params.get('agent_native');
 
     const VALID_DIFFICULTIES = ['Easy', 'Medium', 'Hard'];
     const VALID_CATEGORIES = ['Earn Now', 'Infrastructure', 'Platforms', 'Token Agents'];
@@ -46,6 +47,9 @@ export async function GET(req: NextRequest) {
       if (difficulty) {
         query += ` AND difficulty = ?`;
         queryParams.push(difficulty);
+      }
+      if (agentNative === 'true') {
+        query += ` AND agent_native = 1`;
       }
 
       const entries = await db.execute({ sql: query, args: queryParams });
@@ -95,6 +99,7 @@ export async function GET(req: NextRequest) {
           earn_potential: entry.earn_potential,
           difficulty: entry.difficulty,
           time_to_first_dollar: entry.time_to_first_dollar,
+          agent_native: entry.agent_native ? true : false,
           votes: Number(entry.votes_up || 0) - Number(entry.votes_down || 0),
           relevance_score: score,
           action: entry.url && entry.url !== '#' ? `Visit ${entry.url} to get started` : 'Platform entry — no direct link',

@@ -24,6 +24,7 @@ interface Entry {
   time_to_first_dollar: string | null;
   votes_up: number;
   votes_down: number;
+  agent_native?: number | null;
 }
 
 interface Swarm {

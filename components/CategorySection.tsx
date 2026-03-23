@@ -17,6 +17,7 @@ interface Entry {
   time_to_first_dollar: string | null;
   votes_up: number;
   votes_down: number;
+  agent_native?: number | null;
 }
 
 interface CategorySectionProps {
@@ -196,11 +197,16 @@ export default function CategorySection({
                     </div>
                     <div className="card__sub">{entry.subcategory}</div>
                   </div>
-                  {entry.stage && (
-                    <span className={`card__stage ${stageClass}`}>
-                      {entry.stage}
-                    </span>
-                  )}
+                  <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                    {entry.agent_native ? (
+                      <span style={{ fontSize: '0.65rem', background: '#10b981', color: '#000', padding: '2px 6px', borderRadius: '4px', fontWeight: 600 }}>🤖 Agent-Native</span>
+                    ) : null}
+                    {entry.stage && (
+                      <span className={`card__stage ${stageClass}`}>
+                        {entry.stage}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="card__desc">

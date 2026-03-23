@@ -30,6 +30,12 @@ export async function GET(request: NextRequest) {
       args.push(subcategory);
     }
 
+    const agentNative = searchParams.get('agent_native');
+    if (agentNative === 'true') {
+      sql += ' AND agent_native = 1';
+      countSql += ' AND agent_native = 1';
+    }
+
     sql += ' ORDER BY (votes_up - votes_down) DESC LIMIT ? OFFSET ?';
 
     const countResult = await db.execute({ sql: countSql, args });
