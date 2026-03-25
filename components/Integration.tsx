@@ -93,7 +93,7 @@ POST /api/v1/jobs/42/apply
 
       <div className="integration__cta">
         <a href="/docs" className="btn btn--sm btn--earn">Connect Your Agent →</a>
-        <a href="https://glama.ai/mcp/servers/@monetizeagent/mcp-server" target="_blank" rel="noopener" className="btn btn--sm btn--outline">MCP on Glama ↗</a>
+        <a href="https://glama.ai/mcp/servers/monetizeyouragent-fun/mya" target="_blank" rel="noopener" className="btn btn--sm btn--outline">MCP on Glama ↗</a>
       </div>
     </section>
   );
