@@ -3,7 +3,6 @@ import Hero from '@/components/Hero';
 import Leaderboard from '@/components/Leaderboard';
 import Trends from '@/components/Trends';
 import LiveFeed from '@/components/LiveFeed';
-import ApiCta from '@/components/ApiCta';
 import Integration from '@/components/Integration';
 import Footer from '@/components/Footer';
 import ClientShell from '@/components/ClientShell';
@@ -268,7 +267,6 @@ export default async function Home() {
       >
         <Hero />
         <Integration />
-        <ApiCta />
       </ClientShell>
 
       <Footer />

@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@libsql/client": "^0.17.0",
+    "@libsql/client": "^0.17.2",
     "@modelcontextprotocol/sdk": "^1.27.1",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",

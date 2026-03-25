@@ -1150,6 +1150,14 @@ a, button, [role="button"], [role="link"], input, textarea, select {
   margin-bottom: var(--space-xs);
 }
 
+.integration__protocols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  justify-content: center;
+}
+
 .integration__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
