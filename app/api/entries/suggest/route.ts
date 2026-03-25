@@ -4,6 +4,7 @@ import db from '@/lib/db';
 import { postLimiter } from '@/lib/rate-limit';
 import { validateBody, errorResponse } from '@/lib/validation';
 import { insertFeedEvent } from '@/lib/feed';
+import { VALID_CATEGORIES } from '@/lib/categories';
 
 export async function POST(request: NextRequest) {
   const limited = postLimiter(request);
@@ -20,6 +21,14 @@ export async function POST(request: NextRequest) {
   if ('error' in result) return result.error;
 
   const { name, category, url, description } = result.data;
+
+  if (!VALID_CATEGORIES.includes(category as string)) {
+    return errorResponse(
+      `Invalid category "${category}". Must be one of: ${VALID_CATEGORIES.join(', ')}`,
+      'VALIDATION_ERROR',
+      400
+    );
+  }
 
   try {
     await db.execute({

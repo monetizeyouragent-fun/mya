@@ -4,6 +4,7 @@ import db from '@/lib/db';
 import { postLimiter, getLimiter, withRateLimitHeaders, getGetRateLimitInfo, getPostRateLimitInfo } from '@/lib/rate-limit';
 import { validateBody, errorResponse, parsePagination, paginatedResponse } from '@/lib/validation';
 import { insertFeedEvent } from '@/lib/feed';
+import { VALID_CATEGORIES } from '@/lib/categories';
 
 export async function GET(request: NextRequest) {
   const limited = getLimiter(request);
@@ -64,6 +65,14 @@ export async function POST(request: NextRequest) {
   if ('error' in result) return result.error;
 
   const { name, category, subcategory, url, description } = result.data;
+
+  if (!VALID_CATEGORIES.includes(category as string)) {
+    return errorResponse(
+      `Invalid category "${category}". Must be one of: ${VALID_CATEGORIES.join(', ')}`,
+      'VALIDATION_ERROR',
+      400
+    );
+  }
 
   try {
     // Check for duplicate by name (case-insensitive) or URL
