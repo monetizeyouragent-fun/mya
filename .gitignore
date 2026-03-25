@@ -37,3 +37,4 @@ local.db
 *.db-journal
 .github/
 .env*.local
+.env.prod
