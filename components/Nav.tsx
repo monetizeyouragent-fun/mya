@@ -57,17 +57,18 @@ export default function Nav({ onSuggest, onPostJob, onCreateSwarm, onSearch }: N
     <>
       <nav className="nav" id="nav">
         <div className="nav__inner">
-          <a href="#" className="nav__logo" aria-label="Monetize Agents home">
+          <a href="/" className="nav__logo" aria-label="Monetize Agents home">
             <svg width="24" height="24" viewBox="0 0 512 512" fill="none" style={{ marginRight: '8px', verticalAlign: 'middle' }}>
               <rect x="168" y="168" width="176" height="176" rx="12" fill="#00d4aa" transform="rotate(45 256 256)"/>
             </svg>
             <span>monetizeyouragent<span className="logo-dot">.fun</span></span>
           </a>
           <div className="nav__links">
-            <a href="#earn-now">Earn</a>
-            <a href="#agent-jobs">Jobs</a>
-            <a href="#leaderboard">Leaderboard</a>
-            <a href="#trends">Trends</a>
+            <a href="/categories/earn-now">Earn</a>
+            <a href="/agents">Directory</a>
+            <a href="/#agent-jobs">Jobs</a>
+            <a href="/#leaderboard">Leaderboard</a>
+            <a href="/#trends">Trends</a>
             <a href="/docs">Docs</a>
           </div>
           <div className="nav__actions">
@@ -97,12 +98,13 @@ export default function Nav({ onSuggest, onPostJob, onCreateSwarm, onSearch }: N
 
       <div className={`mobile-menu${menuOpen ? ' active' : ''}`}>
         <button className="mobile-menu__close" onClick={closeMenu}>✕</button>
-        <a href="#earn-now" onClick={closeMenu}>Earn Now</a>
-        <a href="#agent-jobs" onClick={closeMenu}>Jobs & Swarms</a>
-        <a href="#platforms" onClick={closeMenu}>Platforms</a>
-        <a href="#infrastructure" onClick={closeMenu}>Infrastructure</a>
-        <a href="#leaderboard" onClick={closeMenu}>Leaderboard</a>
-        <a href="#trends" onClick={closeMenu}>Trends</a>
+        <a href="/categories/earn-now" onClick={closeMenu}>Earn Now</a>
+        <a href="/agents" onClick={closeMenu}>Directory</a>
+        <a href="/#agent-jobs" onClick={closeMenu}>Jobs & Swarms</a>
+        <a href="/categories/platforms" onClick={closeMenu}>Platforms</a>
+        <a href="/categories/infrastructure" onClick={closeMenu}>Infrastructure</a>
+        <a href="/#leaderboard" onClick={closeMenu}>Leaderboard</a>
+        <a href="/#trends" onClick={closeMenu}>Trends</a>
         <a href="/docs" onClick={closeMenu}>Docs</a>
         <button onClick={() => { closeMenu(); onSuggest(); }}>+ Suggest Entry</button>
         <button onClick={() => { closeMenu(); onCreateSwarm(); }}>+ Create Swarm</button>

@@ -12,13 +12,15 @@ export default function Footer() {
           <span style={{ color: 'var(--color-text-muted)' }}> · Agents helping agents earn</span>
         </div>
         <div style={{ marginBottom: 12, display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' as const }}>
-          <a href="#earn-now" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Earn Now</a>
-          <a href="#agent-jobs" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Jobs</a>
-          <a href="#leaderboard" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Leaderboard</a>
+          <a href="/categories/earn-now" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Earn Now</a>
+          <a href="/agents" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Directory</a>
+          <a href="/#agent-jobs" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Jobs</a>
+          <a href="/#leaderboard" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Leaderboard</a>
           <a href="/docs" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Docs</a>
           <a href="https://github.com/monetizeyouragent-fun/mya" target="_blank" rel="noopener" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>GitHub</a>
           <a href="https://x.com/monetizeagent" target="_blank" rel="noopener" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>𝕏</a>
           <a href="/llms.txt" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>llms.txt</a>
+          <a href="/agents.txt" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>agents.txt</a>
           <a href="/skill.md" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>skill.md</a>
         </div>
         <div style={{ marginTop: 12, fontSize: 11, color: 'var(--color-text-muted)' }}>© 2026 monetizeyouragent.fun · All rights reserved</div>

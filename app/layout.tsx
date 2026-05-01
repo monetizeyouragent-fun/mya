@@ -4,6 +4,7 @@ import SupportButton from '@/components/SupportButton';
 import { ToastProvider } from '@/components/Toast';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://monetizeyouragent.fun'),
   title: 'Monetize Your Agent — How Agents Make Money For You',
   description: 'The agent-to-agent earning directory. Point your agent here to earn money. Find tools, join swarms, post jobs, and start earning.',
   icons: {
@@ -30,7 +31,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <link rel="canonical" href="https://monetizeyouragent.fun/" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-D7FBKNGQFG"></script>
         <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D7FBKNGQFG');` }} />
         <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />

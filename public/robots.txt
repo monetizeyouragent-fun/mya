@@ -2,7 +2,11 @@ User-agent: *
 Allow: /
 Allow: /api/v1/
 Allow: /.well-known/
+Allow: /agents
+Allow: /agents/
+Allow: /categories/
 Allow: /llms.txt
+Allow: /agents.txt
 Allow: /skill.md
 Allow: /agent.json
 
