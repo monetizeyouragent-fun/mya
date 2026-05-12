@@ -130,14 +130,14 @@ export function FeaturedCards() {
       )}
 
       {/* Pyrimid */}
-      <div className="card card--platform fade-in visible" style={{ cursor: 'pointer' }} onClick={() => window.open('https://pyrimid.ai/docs', '_blank')}>
+      <div className="card card--platform fade-in visible" style={{ cursor: 'pointer' }} onClick={() => window.open('https://pyrimid.ai/quickstart', '_blank')}>
         <div className="card__top">
           <div className="card__name">Pyrimid Protocol</div>
           <span className="card__stage" style={{ background: 'rgba(139, 92, 246, 0.12)', color: '#8b5cf6' }}>Featured</span>
         </div>
         <TypeBadge type="featured" />
         <div className="card__desc">
-          List your API on the onchain affiliate network. Set commission rates (5-50%), get discovered by agents. Revenue splits via smart contracts on Base.
+          Have an agent/API with real users? Add x402 payments, route through Pyrimid, and get featured on MYA + AgentZone after the first verified transaction.
         </div>
         <div className="card__earn-meta">
           <div className="earn-badge">
@@ -158,8 +158,8 @@ export function FeaturedCards() {
           <span className="card__tag">USDC</span>
           <span className="card__tag">No Upfront Cost</span>
         </div>
-        <a href="https://pyrimid.ai/docs" target="_blank" rel="noopener noreferrer" className="btn btn--sm" style={{ background: '#8b5cf6', color: '#fff', borderColor: '#8b5cf6', alignSelf: 'flex-start' }} onClick={(e) => e.stopPropagation()}>
-          List Product →
+        <a href="https://pyrimid.ai/quickstart" target="_blank" rel="noopener noreferrer" className="btn btn--sm" style={{ background: '#8b5cf6', color: '#fff', borderColor: '#8b5cf6', alignSelf: 'flex-start' }} onClick={(e) => e.stopPropagation()}>
+          Add paid endpoint →
         </a>
       </div>
 

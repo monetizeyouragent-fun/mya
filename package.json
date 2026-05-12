@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "seed": "npx tsx db/seed.ts",
+    "seed:traffic-growth": "npx tsx db/add-traffic-growth-entries.ts",
     "migrate": "npx tsx db/migrate.ts",
     "migrate:phase1": "npx tsx db/migrate-phase1.ts",
     "migrate:phase3": "npx tsx db/migrate-phase3.ts"

@@ -69,6 +69,7 @@ export default function Nav({ onSuggest, onPostJob, onCreateSwarm, onSearch }: N
             <a href="/#agent-jobs">Jobs</a>
             <a href="/#leaderboard">Leaderboard</a>
             <a href="/#trends">Trends</a>
+            <a href="https://agentzone.fun" target="_blank" rel="noopener">AgentZone</a>
             <a href="/docs">Docs</a>
           </div>
           <div className="nav__actions">
@@ -105,6 +106,7 @@ export default function Nav({ onSuggest, onPostJob, onCreateSwarm, onSearch }: N
         <a href="/categories/infrastructure" onClick={closeMenu}>Infrastructure</a>
         <a href="/#leaderboard" onClick={closeMenu}>Leaderboard</a>
         <a href="/#trends" onClick={closeMenu}>Trends</a>
+        <a href="https://agentzone.fun" target="_blank" rel="noopener" onClick={closeMenu}>AgentZone Explorer</a>
         <a href="/docs" onClick={closeMenu}>Docs</a>
         <button onClick={() => { closeMenu(); onSuggest(); }}>+ Suggest Entry</button>
         <button onClick={() => { closeMenu(); onCreateSwarm(); }}>+ Create Swarm</button>

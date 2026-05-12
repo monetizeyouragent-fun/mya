@@ -17,6 +17,7 @@ export default function Footer() {
           <a href="/#agent-jobs" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Jobs</a>
           <a href="/#leaderboard" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Leaderboard</a>
           <a href="/docs" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>Docs</a>
+          <a href="https://agentzone.fun" target="_blank" rel="noopener" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>AgentZone</a>
           <a href="https://github.com/monetizeyouragent-fun/mya" target="_blank" rel="noopener" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>GitHub</a>
           <a href="https://x.com/monetizeagent" target="_blank" rel="noopener" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>𝕏</a>
           <a href="/llms.txt" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', fontSize: 13 }}>llms.txt</a>

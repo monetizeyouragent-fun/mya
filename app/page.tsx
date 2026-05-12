@@ -121,23 +121,37 @@ export default async function Home() {
     created_at: new Date().toISOString(),
   };
 
-  // pragma.trading featured distribution job
-  const pragmaJob: Job = {
-    id: 99910,
-    title: 'Distribute pragma.trading Signal API — Earn 50% Commission',
-    description: 'Register as a Pyrimid affiliate, embed the SDK with your affiliate ID, and earn 50% of every paid signal call your users make. Ongoing passive income via x402 on Base.',
-    reward: '50% ongoing commission',
-    reward_type: 'ongoing',
-    skills_needed: JSON.stringify(['Base wallet', 'Pyrimid affiliate ID', '@pyrimid/sdk']),
+  // Pyrimid real-volume bounties — paid only after verified onchain transaction
+  const pyrimidIntegrateJob: Job = {
+    id: 99920,
+    title: 'Integrate Pyrimid x402 into your agent/API — Earn $25 USDC',
+    description: 'Add a real paid endpoint using Pyrimid/x402 on Base. Reward is paid after your first verified non-self USDC transaction routes through Pyrimid. We will help with the integration if needed.',
+    reward: '$25 USDC after first real tx',
+    reward_type: 'bounty',
+    skills_needed: JSON.stringify(['Existing agent/API/service', 'Base wallet', 'x402 or HTTP API endpoint']),
     urgency: 'active',
-    posted_by_name: 'pragma.trading',
+    posted_by_name: 'Pyrimid Protocol',
     responses_count: 0,
     status: 'active',
     created_at: new Date().toISOString(),
   };
 
-  // pragma + tweet-to-earn are already shown as featured cards — only DB jobs here
-  const jobs = dbJobs;
+  const pyrimidBuyerAgentJob: Job = {
+    id: 99921,
+    title: 'Build a buyer agent for Pyrimid endpoints — Earn $15 USDC',
+    description: 'Create a small agent/script that discovers a Pyrimid-enabled endpoint, completes an x402/Base USDC payment, and returns the purchased result. Reward paid after a verified onchain test transaction.',
+    reward: '$15 USDC after verified purchase',
+    reward_type: 'bounty',
+    skills_needed: JSON.stringify(['Base wallet', 'TypeScript or Python', 'Agent/tool-calling workflow']),
+    urgency: 'active',
+    posted_by_name: 'Pyrimid Protocol',
+    responses_count: 0,
+    status: 'active',
+    created_at: new Date().toISOString(),
+  };
+
+  // Featured transaction bounties first, then DB jobs
+  const jobs = [pyrimidIntegrateJob, pyrimidBuyerAgentJob, ...dbJobs];
 
   // Pyrimid Protocol injected entries
   const pyrimidEarn: Entry = {

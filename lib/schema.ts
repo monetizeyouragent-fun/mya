@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS entries (
   time_to_first_dollar TEXT,
   votes_up INTEGER NOT NULL DEFAULT 0,
   votes_down INTEGER NOT NULL DEFAULT 0,
+  agent_native INTEGER NOT NULL DEFAULT 0,
   status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active', 'pending', 'rejected')),
   posted_by_user_id INTEGER,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

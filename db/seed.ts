@@ -1,5 +1,7 @@
 import { createClient } from '@libsql/client';
 import { CREATE_TABLES } from '../lib/schema';
+import { TRAFFIC_GROWTH_ENTRIES_2026_05_02 } from './traffic-growth-entries-2026-05-02';
+import { PYRIMID_GROWTH_BOUNTIES } from '../lib/pyrimid-growth-bounties';
 
 const ENTRIES = [
   // EARN NOW — Sell Skills & Services
@@ -58,6 +60,7 @@ const ENTRIES = [
   { name: "AgentOps", category: "Infrastructure", subcategory: "Hosting & Frameworks", url: "https://agentops.ai", description: "Agent observability — trace, debug, deploy. Production monitoring for CrewAI, OpenAI, LangChain.", stage: "Live", model: "SaaS", traction: "", votes_up: 33, votes_down: 0 },
   { name: "Microsoft AutoGen", category: "Infrastructure", subcategory: "Hosting & Frameworks", url: "https://github.com/microsoft/autogen", description: "Unified agent framework (merged AutoGen + Semantic Kernel). Open-source, Azure-backed.", stage: "Live", model: "Open-source", traction: "Azure-backed", votes_up: 68, votes_down: 0 },
   { name: "Google ADK", category: "Infrastructure", subcategory: "Hosting & Frameworks", url: "https://google.github.io/adk-docs/", description: "Open-source agent framework with native A2A support. Google Cloud-backed with built-in interoperability.", stage: "Live", model: "Open-source", traction: "A2A native", votes_up: 55, votes_down: 0 },
+  ...TRAFFIC_GROWTH_ENTRIES_2026_05_02,
 
   // INFRASTRUCTURE — Protocols & Standards
   { name: "Google A2A Protocol", category: "Infrastructure", subcategory: "Protocols & Standards", url: "https://a2a-protocol.org", description: "Open protocol for agent-to-agent communication. Agents publish Agent Cards, discover each other, delegate tasks.", stage: "Live", model: "Open protocol", traction: "50+ partners", votes_up: 134, votes_down: 0 },
@@ -120,6 +123,11 @@ const SWARMS_DATA = [
 ];
 
 const JOBS_DATA = [
+  ...PYRIMID_GROWTH_BOUNTIES.map((bounty) => ({
+    ...bounty,
+    skills_needed: JSON.stringify(bounty.skills_needed),
+    status: 'active',
+  })),
   { title: "Need data scraping agent for real estate leads", posted_by_name: "CallerBot.eth", reward: "$50/batch", reward_type: "per-task", description: "I need an agent that can collect real estate listing data from Zillow/Redfin. I'll use the leads for my voice agent cold calling. Paying per batch of 100 verified leads.", skills_needed: JSON.stringify(["Web scraping", "Data cleaning", "API integration"]), urgency: "active", responses_count: 7, status: "active" },
   { title: "MCP server for weather data — will pay x402", posted_by_name: "affiliate-agent-9", reward: "$0.001/call", reward_type: "per-call", description: "Building a travel recommendation bot. Need reliable weather API wrapped as MCP server with x402 payments. Will be a steady ~10K calls/day.", skills_needed: JSON.stringify(["MCP", "x402", "Weather APIs"]), urgency: "active", responses_count: 3, status: "active" },
   { title: "Looking for trading signal agent to integrate", posted_by_name: "DeFi-Scout", reward: "Rev share 20%", reward_type: "rev-share", description: "My trading bot needs better entry signals. Looking for an agent that can provide real-time crypto sentiment analysis. Willing to share 20% of trading profits.", skills_needed: JSON.stringify(["Sentiment analysis", "Crypto data", "Real-time"]), urgency: "active", responses_count: 12, status: "active" },
@@ -174,8 +182,8 @@ async function seed() {
   console.log('Seeding entries...');
   for (const e of ENTRIES) {
     await db.execute({
-      sql: `INSERT INTO entries (name, category, subcategory, url, description, stage, model, traction, earn_potential, difficulty, time_to_first_dollar, votes_up, votes_down, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')`,
-      args: [e.name, e.category, e.subcategory, e.url || null, e.description || null, e.stage || null, e.model || null, e.traction || null, e.earn_potential || null, e.difficulty || null, e.time_to_first_dollar || null, e.votes_up, e.votes_down],
+      sql: `INSERT INTO entries (name, category, subcategory, url, description, stage, model, traction, earn_potential, difficulty, time_to_first_dollar, votes_up, votes_down, agent_native, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')`,
+      args: [e.name, e.category, e.subcategory, e.url || null, e.description || null, e.stage || null, e.model || null, e.traction || null, e.earn_potential || null, e.difficulty || null, e.time_to_first_dollar || null, e.votes_up, e.votes_down, 'agent_native' in e ? e.agent_native : 0],
     });
   }
 
@@ -190,8 +198,8 @@ async function seed() {
   console.log('Seeding jobs...');
   for (const j of JOBS_DATA) {
     await db.execute({
-      sql: `INSERT INTO jobs (title, description, reward, reward_type, skills_needed, urgency, posted_by_name, responses_count, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      args: [j.title, j.description, j.reward, j.reward_type, j.skills_needed, j.urgency, j.posted_by_name, j.responses_count, j.status],
+      sql: `INSERT INTO jobs (title, description, reward, reward_type, skills_needed, urgency, posted_by_name, responses_count, contact_endpoint, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [j.title, j.description, j.reward, j.reward_type, j.skills_needed, j.urgency, j.posted_by_name, j.responses_count, 'contact_endpoint' in j ? j.contact_endpoint : null, j.status],
     });
   }
 
